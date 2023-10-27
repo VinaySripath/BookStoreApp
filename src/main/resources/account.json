@@ -1,0 +1,12 @@
+{
+        "name": "jarda",
+        "balance": 2000,
+        "location": "mumbai",
+        "mobilePin": "1816",
+        "accountType": "savings",
+        "policy": {
+                "policyName": "Star",
+                "premium": 1000,
+                "sum": 150000
+        }
+}
