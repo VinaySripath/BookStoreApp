@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.sprint.bspro.entity.AppCustomer;
 @Repository
 public interface IAppCustomerRepository extends JpaRepository<AppCustomer, Integer> {
-
+	public AppCustomer getAppCustomerByUsername(String username);
 }

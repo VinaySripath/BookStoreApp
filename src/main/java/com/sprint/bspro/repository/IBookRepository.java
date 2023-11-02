@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.sprint.bspro.entity.Book;
 @Repository
 public interface IBookRepository extends JpaRepository<Book, Integer> {
-
+	public Book getBookByTitle(String title);
 }

@@ -9,31 +9,19 @@ public class Admin extends BookStoreUser {
 	
 	@Embedded
 	private ContactInfo contactInfo;
-
-	/**
-	 * @return the fullName
-	 */
+	
 	public String getFullName() {
 		return fullName;
 	}
 
-	/**
-	 * @param fullName the fullName to set
-	 */
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
 
-	/**
-	 * @return the contactInfo
-	 */
 	public ContactInfo getContactInfo() {
 		return contactInfo;
 	}
 
-	/**
-	 * @param contactInfo the contactInfo to set
-	 */
 	public void setContactInfo(ContactInfo contactInfo) {
 		this.contactInfo = contactInfo;
 	}
@@ -46,12 +34,16 @@ public class Admin extends BookStoreUser {
 
 	public Admin() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Admin(int userCode, String username, String password, String userrole) {
-		super(userCode, username, password, userrole);
-		// TODO Auto-generated constructor stub
+	public Admin(String username, String password, String userrole) {
+		super( username, password, userrole);
+	}
+	
+	public Admin(String username, String password, String userrole, String fullName, ContactInfo contactInfo) {
+		super( username, password, userrole);
+		this.fullName = fullName;
+		this.contactInfo = contactInfo;
 	}
 	
 }

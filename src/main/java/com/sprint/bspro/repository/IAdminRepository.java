@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.sprint.bspro.entity.Admin;
 @Repository
 public interface IAdminRepository extends JpaRepository<Admin, Integer> {
-
+	public Admin getAdminByUsername(String username);
 }

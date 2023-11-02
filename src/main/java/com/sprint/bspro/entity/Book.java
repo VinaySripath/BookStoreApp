@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Book {
@@ -21,7 +21,12 @@ public class Book {
 	private int bookId;
 	private String title;
 	private String description;
+	private String category;
+	private int pages;
 	private int price;
+	
+	@ManyToOne
+	private Author author;
 	
 	@OneToMany(cascade =  CascadeType.ALL)
 	private List<Reviews> feedbacks;
@@ -108,30 +113,64 @@ public class Book {
 	public List<AppOrder> getOrders() {
 		return orders;
 	}
-
 	/**
 	 * @param orders the orders to set
 	 */
 	public void setOrders(List<AppOrder> orders) {
 		this.orders = orders;
 	}
+	/**
+	 * @return the category
+	 */
+	public String getCategory() {
+		return category;
+	}
+	/**
+	 * @param category the category to set
+	 */
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
-	public Book(int bookId, String title, String description, int price, List<Reviews> feedbacks,
-			List<AppOrder> orders) {
+	/**
+	 * @return the pages
+	 */
+	public int getPages() {
+		return pages;
+	}
+
+	/**
+	 * @param pages the pages to set
+	 */
+	public void setPages(int pages) {
+		this.pages = pages;
+	}
+
+	public Book(int bookId, String title, String description, String category, int pages, int price,
+			List<Reviews> feedbacks, List<AppOrder> orders) {
 		super();
 		this.bookId = bookId;
 		this.title = title;
 		this.description = description;
+		this.category = category;
+		this.pages = pages;
 		this.price = price;
 		this.feedbacks = feedbacks;
 		this.orders = orders;
+	}
+
+	public Book(String title, String description, String category, int pages, int price) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.category = category;
+		this.pages = pages;
+		this.price = price;
 	}
 
 	public Book() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 	
 }
