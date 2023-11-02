@@ -7,4 +7,6 @@ import com.sprint.bspro.entity.Author;
 @Repository
 public interface IAuthorRepository extends JpaRepository<Author, Integer> {
 
+	public Author getAuthorByUsername(String username);
+
 }

@@ -5,9 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.criteria.Order;
 
 @Entity
 public class AppCustomer extends BookStoreUser{
@@ -22,24 +20,25 @@ public class AppCustomer extends BookStoreUser{
 
 	public AppCustomer() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public AppCustomer(int userCode, String username, String password, String userrole) {
-		super(userCode, username, password, userrole);
-		// TODO Auto-generated constructor stub
+	public AppCustomer( String username, String password, String userrole) {
+		super( username, password, userrole);
 	}
-
+	
 	public AppCustomer(String fullName, ContactInfo contactInfo, List<AppOrder> allPlacedOrders) {
 		super();
 		this.fullName = fullName;
 		this.contactInfo = contactInfo;
 		this.allPlacedOrders = allPlacedOrders;
 	}
+	
+	public AppCustomer( String username, String password, String userrole, String fullName, ContactInfo contactInfo) {
+		super( username, password, userrole);
+		this.fullName = fullName;
+		this.contactInfo = contactInfo;
+	}
 
-	/**
-	 * @return the fullName
-	 */
 	public String getFullName() {
 		return fullName;
 	}

@@ -21,13 +21,13 @@ public class BookStoreUser {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public BookStoreUser(int userCode, String username, String password, String userrole) {
+	public BookStoreUser(String username, String password, String userrole) {
 		super();
-		this.userCode = userCode;
 		this.username = username;
 		this.password = password;
 		this.userrole = userrole;
 	}
+	
 	/**
 	 * @return the userCode
 	 */

@@ -13,7 +13,7 @@ public class Author extends BookStoreUser{
 	private String name;
 	private String region;
 	private String nativeLanguage;
-	
+	private String status;
 	@Embedded
 	private ContactInfo contactInfo;
 	@OneToMany(cascade =  CascadeType.ALL)
@@ -92,9 +92,20 @@ public class Author extends BookStoreUser{
 	public void setFeedbacks(List<Reviews> feedbacks) {
 		this.feedbacks = feedbacks;
 	}
-	
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Author(String name, String region, String nativeLanguage, ContactInfo contactInfo, List<Reviews> feedbacks,
-			List<Book> books) {
+			List<Book> books, String status) {
 		super();
 		this.name = name;
 		this.region = region;
@@ -102,14 +113,21 @@ public class Author extends BookStoreUser{
 		this.contactInfo = contactInfo;
 		this.feedbacks = feedbacks;
 		this.books = books;
+		this.status=status;
 	}
 	public Author() {
 		super();
+	}
+	public Author(String username, String password, String userrole) {
+		super( username, password, userrole);
 		// TODO Auto-generated constructor stub
 	}
-	public Author(int userCode, String username, String password, String userrole) {
-		super(userCode, username, password, userrole);
-		// TODO Auto-generated constructor stub
+	public Author(String username, String password, String userrole, String name, String nativeLanguage,ContactInfo contactInfo, String status) {
+		super( username, password, userrole);
+		this.contactInfo=contactInfo;
+		this.name=name;
+		this.nativeLanguage=nativeLanguage;
+		this.status=status;
 	}
 	
 }
