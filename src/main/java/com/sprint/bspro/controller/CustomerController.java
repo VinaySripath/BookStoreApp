@@ -1,8 +1,12 @@
 package com.sprint.bspro.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,14 +17,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sprint.bspro.dto.AppCustomerRequestDTO;
 import com.sprint.bspro.dto.AppCustomerResponseDTO;
+import com.sprint.bspro.dto.AppOrderRequestDTO;
+import com.sprint.bspro.dto.AppOrderResponseDTO;
 import com.sprint.bspro.dto.BookResponseDTO;
+import com.sprint.bspro.dto.ReviewsRequestDTO;
+import com.sprint.bspro.dto.ReviewsResponseDTO;
 import com.sprint.bspro.entity.AppCustomer;
+import com.sprint.bspro.entity.AppOrder;
 import com.sprint.bspro.entity.Book;
+import com.sprint.bspro.entity.Reviews;
 import com.sprint.bspro.service.IAppCustomerService;
+import com.sprint.bspro.service.IAppOrderService;
+import com.sprint.bspro.service.IAuthorService;
 import com.sprint.bspro.service.IBookService;
+import com.sprint.bspro.service.IReviewsService;
 import com.sprint.bspro.util.AppCustomerDTOMapper;
+import com.sprint.bspro.util.AppOrderDTOMapper;
 import com.sprint.bspro.util.BookDTOMapper;
-
+import com.sprint.bspro.util.ReviewsDTOMapper;
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class CustomerController {
@@ -28,6 +43,12 @@ public class CustomerController {
 	IBookService bookService;
 	@Autowired
 	IAppCustomerService appCustomerService;
+	@Autowired
+	IReviewsService reviewService;
+	@Autowired
+	IAuthorService authorService;
+	@Autowired
+	IAppOrderService orderService;
 	
 	@GetMapping("/bookinfo")
 	public ResponseEntity<BookResponseDTO> getBookById(@RequestParam int id) {
@@ -90,6 +111,66 @@ public class CustomerController {
 			AppCustomer customer = dtoConverter.getAppCustomerFromAppCustomerDTO(customerDTO);
 			AppCustomer savedCustomer = appCustomerService.updateCustomerByUsername(customer, username);
 			return dtoConverter.getAppCustomerDTOFromAppCustomer(savedCustomer);
+		}
+		return null;
+	}
+	
+	@PostMapping("/addreview")
+	public ReviewsResponseDTO addReview(@RequestBody ReviewsRequestDTO reviewDTO, @RequestParam String reviewitem) {
+		if(reviewDTO != null) {
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			Reviews review = dtoConverter.getReviewsFromReviewsDTO(reviewDTO);
+			Reviews savedReview = reviewService.addReview(review);
+			if(savedReview.getReviewCategory().equals("author")) {
+				authorService.addFeedbacks(reviewitem, savedReview.getRid());
+			}
+			if(savedReview.getReviewCategory().equals("book")) {
+				bookService.addFeedbacks(reviewitem, savedReview.getRid());
+			}
+			return dtoConverter.getReviewsDTOFromReviews(savedReview);
+		}
+		return null;
+	}
+	
+	@PutMapping("/updatereview")
+	public ReviewsResponseDTO updateReview(@RequestBody ReviewsRequestDTO reviewDTO) {
+		if(reviewDTO != null) {
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			Reviews review = dtoConverter.getReviewsFromReviewsDTO(reviewDTO);
+			Reviews savedReview = reviewService.updateReview(review);
+			return dtoConverter.getReviewsDTOFromReviews(savedReview);
+		}
+		return null;
+	}
+	
+	@PostMapping("/placeorder")
+	public AppOrderResponseDTO placeOrder(@RequestBody AppOrderRequestDTO requestDTO) {
+		if(requestDTO != null) {
+			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+			AppOrder order = dtoMapper.getAppOrderFromAppOrderRequestDTO(requestDTO);
+			AppOrder placedOrder = orderService.addOrder(order);
+			return dtoMapper.getAppOrderResponseDTOFromAppOrder(placedOrder);
+		}
+		return null;
+	}
+	
+	@PutMapping("/cancelorder")
+	public AppOrderResponseDTO cancelOrder(@RequestParam int oid) {
+		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+		AppOrder order = orderService.cancelOrder(oid);
+		return dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
+	}
+	
+	@GetMapping("/allplacedorders")
+	public List<AppOrderResponseDTO> getAllPlacedOrders(@RequestParam String username){
+		if(username != null) {
+			List<AppOrder> orderList = orderService.viewOrdersByCustomer(username);
+			List<AppOrderResponseDTO> orderResponseList = new ArrayList<>();
+			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+			for(AppOrder order: orderList) {
+				orderResponseList.add(dtoMapper.getAppOrderResponseDTOFromAppOrder(order));
+			}
+			return orderResponseList;
 		}
 		return null;
 	}

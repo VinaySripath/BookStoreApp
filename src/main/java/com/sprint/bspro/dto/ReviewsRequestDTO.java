@@ -1,33 +1,11 @@
-package com.sprint.bspro.entity;
+package com.sprint.bspro.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Reviews {
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int rid;
+public class ReviewsRequestDTO {
 	private String comment;
-	private String reviewDate; // date only month & year ... like Aug 2023
 	private int ratings;
 	private String reviewCategory;
 	private String customerName;
-	/**
-	 * @return the rid
-	 */
-	public int getRid() {
-		return rid;
-	}
-	/**
-	 * @param rid the rid to set
-	 */
-	public void setRid(int rid) {
-		this.rid = rid;
-	}
+	private int rid;
 	/**
 	 * @return the comment
 	 */
@@ -41,25 +19,13 @@ public class Reviews {
 		this.comment = comment;
 	}
 	/**
-	 * @return the reviewDate
-	 */
-	public String getReviewDate() {
-		return reviewDate;
-	}
-	/**
-	 * @param reviewDate the reviewDate to set
-	 */
-	public void setReviewDate(String reviewDate) {
-		this.reviewDate = reviewDate;
-	}
-	/**
 	 * @return the ratings
 	 */
 	public int getRatings() {
 		return ratings;
 	}
 	/**
-	 * @param raitings the ratings to set
+	 * @param ratings the ratings to set
 	 */
 	public void setRatings(int ratings) {
 		this.ratings = ratings;
@@ -88,17 +54,34 @@ public class Reviews {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public Reviews(int rid, String comment, String reviewDate, int ratings, String reviewCategory, String customerName) {
-		super();
+	/**
+	 * @return the rid
+	 */
+	public int getRid() {
+		return rid;
+	}
+	/**
+	 * @param rid the rid to set
+	 */
+	public void setRid(int rid) {
 		this.rid = rid;
+	}
+	public ReviewsRequestDTO(String comment, int ratings, String reviewCategory, String customerName, int rid) {
+		super();
 		this.comment = comment;
-		this.reviewDate = reviewDate;
+		this.ratings = ratings;
+		this.reviewCategory = reviewCategory;
+		this.customerName = customerName;
+		this.rid = rid;
+	}
+	public ReviewsRequestDTO(String comment, int ratings, String reviewCategory, String customerName) {
+		super();
+		this.comment = comment;
 		this.ratings = ratings;
 		this.reviewCategory = reviewCategory;
 		this.customerName = customerName;
 	}
-	public Reviews() {
+	public ReviewsRequestDTO() {
 		super();
 	}
-	
 }

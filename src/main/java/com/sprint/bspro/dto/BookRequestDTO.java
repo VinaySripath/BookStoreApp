@@ -7,6 +7,7 @@ public class BookRequestDTO {
 	private int pages;
 	private String category;
 	private int id;
+	private int availableQuantity;
 	public int getId() {
 		return id;
 	}
@@ -43,7 +44,14 @@ public class BookRequestDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public BookRequestDTO(String title, String description, int price, int pages, String category, int id) {
+	public int getAvailableQuantity() {
+		return availableQuantity;
+	}
+	public void setAvailableQuantity(int availableQuantity) {
+		this.availableQuantity = availableQuantity;
+	}
+	public BookRequestDTO(String title, String description, int price, int pages, String category, int id,
+			int availableQuantity) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -51,6 +59,7 @@ public class BookRequestDTO {
 		this.pages = pages;
 		this.category = category;
 		this.id = id;
+		this.availableQuantity = availableQuantity;
 	}
 	public BookRequestDTO(String title, String description, int price, int pages, String category) {
 		super();

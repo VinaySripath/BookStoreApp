@@ -16,6 +16,7 @@ public class BookDTOMapper {
 		bk.setCategory(dto.getCategory());
 		bk.setPages(dto.getPages());
 		bk.setDescription(dto.getDescription());
+		bk.setAvailableQuantity(dto.getAvailableQuantity());
 		System.out.println("the book is ! "+ bk.getBookId());
 		return bk;
 	}
@@ -28,6 +29,9 @@ public class BookDTOMapper {
 		bdto.setId(book.getBookId());
 		bdto.setCategory(book.getCategory());
 		bdto.setPages(book.getPages());
+		bdto.setFeedbacks(book.getFeedbacks());
+		bdto.setAuthor(book.getAuthor());
+		bdto.setAvailableQuantity(book.getAvailableQuantity());
 		return bdto;
 	}
 }

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.sprint.bspro.entity.BookStoreUser;
 @Repository
 public interface IBookStoreUserRepository extends JpaRepository<BookStoreUser, Integer> {
-
+	public BookStoreUser getBookStoreUserByUsername(String username);
 }

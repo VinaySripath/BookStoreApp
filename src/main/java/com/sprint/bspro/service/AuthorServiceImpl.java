@@ -1,17 +1,24 @@
 package com.sprint.bspro.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.ContactInfo;
+import com.sprint.bspro.entity.Reviews;
 import com.sprint.bspro.repository.IAuthorRepository;
+import com.sprint.bspro.repository.IReviewsRepository;
 @Service
 public class AuthorServiceImpl implements IAuthorService{
 
 	@Autowired
 	IAuthorRepository authorRepository;
+	@Autowired
+	IReviewsRepository reviewsRepository;
 	@Override
 	public Author createAppAuthor(Author author) {
 		if(author != null) {
@@ -133,6 +140,22 @@ public class AuthorServiceImpl implements IAuthorService{
 	@Override
 	public Author viewAuthorByName(String username) {
 		return authorRepository.getAuthorByUsername(username);
+	}
+
+	@Override
+	@Transactional
+	public Author addFeedbacks(String username, int rid) {
+		Author a = authorRepository.getAuthorByUsername(username);
+		if(a != null) {
+			List<Reviews> reviews = a.getFeedbacks();
+			Reviews review = reviewsRepository.findById(rid).get();
+			if(review != null) {
+				reviews.add(review);
+				a.setFeedbacks(reviews);
+				return a;
+			}
+		}
+		return null;
 	}
 
 }

@@ -14,4 +14,6 @@ public interface IBookService {
 	public Book getBookById(int bId);
 	public Book getBookByTitle(String title);
 	public List<Book> listBooksByCategory(String cat);
+	public Book addFeedbacks(String title, int rid);
+	public Book updateAvailableQuantity(String title, int quantity);
 }

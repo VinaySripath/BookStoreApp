@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sprint.bspro.entity.Book;
+import com.sprint.bspro.entity.Reviews;
 import com.sprint.bspro.repository.IBookRepository;
+import com.sprint.bspro.repository.IReviewsRepository;
 @Service
 public class BookServiceImpl implements IBookService{
 
 	@Autowired
 	IBookRepository bookRepository;
+	@Autowired
+	IReviewsRepository reviewsRepository;
 	@Override
 	public Book createBook(Book b) {
 		if(b != null) {
@@ -78,8 +82,35 @@ public class BookServiceImpl implements IBookService{
 		return bookRepository.getBookByTitle(title);
 	}
 	@Override
-	public List<Book> listBooksByCategory(String cat) {
+	public List<Book> listBooksByCategory(String category) {
+		return bookRepository.getBookByCategory(category);
+	}
+	
+	@Override
+	@Transactional
+	public Book addFeedbacks(String title, int rid) {
+		System.out.println("in add feedback to books------ "+title+"  "+rid);
+		Book book = bookRepository.getBookByTitle(title);
+		if(book != null) {
+			List<Reviews> reviews = book.getFeedbacks();
+			Reviews review = reviewsRepository.findById(rid).get();
+			if(review != null) {
+				reviews.add(review);
+				book.setFeedbacks(reviews);
+				return book;
+			}
+		}
 		return null;
+	}
+
+	@Override
+	@Transactional
+	public Book updateAvailableQuantity(String title, int quantity) {
+		Book book = bookRepository.getBookByTitle(title);
+		if(book != null) {
+			book.setAvailableQuantity(quantity);
+		}
+		return book;
 	}
 
 }
