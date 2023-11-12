@@ -8,8 +8,9 @@ import com.sprint.bspro.entity.Reviews;
 @Service
 public interface IReviewsService {
 	public List<Reviews> listAllReviews();
+	public List<Reviews> listAllReviewsByCategory(String reviewCategory);
+	public List<Reviews> listAllReviewsByCustomer(String customerName);
 	public Reviews addReview(Reviews review);
-	public Reviews deleteReview(Reviews review);
 	public Reviews updateReview(Reviews review);
-	public Reviews viewReview(Reviews review);
+	public Reviews viewReview(int rid);
 }

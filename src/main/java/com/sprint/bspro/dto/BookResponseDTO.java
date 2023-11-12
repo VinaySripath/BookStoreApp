@@ -1,5 +1,10 @@
 package com.sprint.bspro.dto;
 
+import java.util.List;
+
+import com.sprint.bspro.entity.Author;
+import com.sprint.bspro.entity.Reviews;
+
 public class BookResponseDTO {
 	private String title;
 	private String description;
@@ -7,6 +12,9 @@ public class BookResponseDTO {
 	private int pages;
 	private String category;
 	private int id;
+	private List<Reviews> feedbacks;
+	private int availableQuantity;
+	private Author author;
 	
 	public String getTitle() {
 		return title;
@@ -44,7 +52,26 @@ public class BookResponseDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public BookResponseDTO(String title, String description, int price, int pages, String category, int id) {
+	public List<Reviews> getFeedbacks() {
+		return feedbacks;
+	}
+	public void setFeedbacks(List<Reviews> feedbacks) {
+		this.feedbacks = feedbacks;
+	}
+	public int getAvailableQuantity() {
+		return availableQuantity;
+	}
+	public void setAvailableQuantity(int availableQuantity) {
+		this.availableQuantity = availableQuantity;
+	}
+	public Author getAuthor() {
+		return author;
+	}
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+	public BookResponseDTO(String title, String description, int price, int pages, String category, int id,
+			List<Reviews> feedbacks, int availableQuantity, Author author) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -52,6 +79,9 @@ public class BookResponseDTO {
 		this.pages = pages;
 		this.category = category;
 		this.id = id;
+		this.feedbacks = feedbacks;
+		this.availableQuantity = availableQuantity;
+		this.author = author;
 	}
 	public BookResponseDTO() {
 		super();

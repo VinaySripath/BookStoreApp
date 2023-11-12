@@ -3,6 +3,7 @@ package com.sprint.bspro.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import com.sprint.bspro.service.IAuthorService;
 import com.sprint.bspro.service.IBookService;
 import com.sprint.bspro.util.AuthorDTOMapper;
 import com.sprint.bspro.util.BookDTOMapper;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/author")
 public class AuthorController {

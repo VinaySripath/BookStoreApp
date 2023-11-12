@@ -1,8 +1,12 @@
 package com.sprint.bspro.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,18 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sprint.bspro.dto.AdminRequestDTO;
 import com.sprint.bspro.dto.AdminResponseDTO;
+import com.sprint.bspro.dto.AppOrderResponseDTO;
 import com.sprint.bspro.dto.AuthorResponseDTO;
+import com.sprint.bspro.dto.BookRequestDTO;
 import com.sprint.bspro.dto.BookResponseDTO;
 import com.sprint.bspro.entity.Admin;
+import com.sprint.bspro.entity.AppOrder;
 import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.Book;
 import com.sprint.bspro.service.IAdminService;
+import com.sprint.bspro.service.IAppOrderService;
 import com.sprint.bspro.service.IAuthorService;
 import com.sprint.bspro.service.IBookService;
 import com.sprint.bspro.util.AdminDTOMapper;
+import com.sprint.bspro.util.AppOrderDTOMapper;
 import com.sprint.bspro.util.AuthorDTOMapper;
 import com.sprint.bspro.util.BookDTOMapper;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -34,6 +43,8 @@ public class AdminController {
 	IAdminService adminService;
 	@Autowired
 	IAuthorService authorService;
+	@Autowired
+	IAppOrderService orderService;
 	
 	@GetMapping("/bookinfo")
 	public ResponseEntity<BookResponseDTO> getBookById(@RequestParam int id) {
@@ -51,6 +62,16 @@ public class AdminController {
 		 BookResponseDTO bresponse= brc.getBookDTOFromBook(book);
 		 
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
+	}
+	
+	@PutMapping("/updateinventory")
+	public BookResponseDTO updateBookQuantity(@RequestBody BookRequestDTO requestDTO){
+		if(requestDTO.getTitle()!= null && requestDTO.getAvailableQuantity()!=0) {
+		Book book = bookService.updateAvailableQuantity(requestDTO.getTitle(), requestDTO.getAvailableQuantity());
+		BookDTOMapper dtoMapper = new BookDTOMapper();
+		return dtoMapper.getBookDTOFromBook(book);
+		}
+		return null;
 	}
 	
 	@PostMapping("/createadmin")
@@ -119,5 +140,31 @@ public class AdminController {
 	public AuthorResponseDTO getAuthorByUserName(@RequestParam String username) {
 		AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 		return dtoConverter.getAuthorDTOFromAuthor(authorService.viewAuthorByName(username));
+	}
+	
+	@PutMapping("/orderstatus")
+	public AppOrderResponseDTO updateOrderStatus(@RequestParam String status, @RequestParam int oid ) {
+		if(status != null && oid != 0) {
+			AppOrder updatedOrder = orderService.updateOrderStatus(status, oid);
+			if(updatedOrder != null) {
+			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+			AppOrderResponseDTO orderDTO = dtoMapper.getAppOrderResponseDTOFromAppOrder(updatedOrder);
+			return orderDTO;
+			}
+			return null;
+		}
+		return null;
+	}
+	
+	@GetMapping("/orderlist")
+	public List<AppOrderResponseDTO> viewAllOrders (){
+		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+		List<AppOrder> allOrders = orderService.viewAllOrders();
+		List<AppOrderResponseDTO> allOrdersDto = new ArrayList<>();
+		for(AppOrder order : allOrders) {
+			AppOrderResponseDTO orderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
+			allOrdersDto.add(orderDto);
+		}
+		return allOrdersDto;
 	}
 }

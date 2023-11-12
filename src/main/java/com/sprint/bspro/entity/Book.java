@@ -24,6 +24,7 @@ public class Book {
 	private String category;
 	private int pages;
 	private int price;
+	private int availableQuantity;
 	
 	@ManyToOne
 	private Author author;
@@ -145,9 +146,37 @@ public class Book {
 	public void setPages(int pages) {
 		this.pages = pages;
 	}
+	
+	/**
+	 * @return the availableQuantity
+	 */
+	public int getAvailableQuantity() {
+		return availableQuantity;
+	}
+
+	/**
+	 * @param availableQuantity the availableQuantity to set
+	 */
+	public void setAvailableQuantity(int availableQuantity) {
+		this.availableQuantity = availableQuantity;
+	}
+
+	/**
+	 * @return the author
+	 */
+	public Author getAuthor() {
+		return author;
+	}
+
+	/**
+	 * @param author the author to set
+	 */
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
 
 	public Book(int bookId, String title, String description, String category, int pages, int price,
-			List<Reviews> feedbacks, List<AppOrder> orders) {
+			int availableQuantity, Author author, List<Reviews> feedbacks, List<AppOrder> orders) {
 		super();
 		this.bookId = bookId;
 		this.title = title;
@@ -155,6 +184,8 @@ public class Book {
 		this.category = category;
 		this.pages = pages;
 		this.price = price;
+		this.availableQuantity = availableQuantity;
+		this.author = author;
 		this.feedbacks = feedbacks;
 		this.orders = orders;
 	}
