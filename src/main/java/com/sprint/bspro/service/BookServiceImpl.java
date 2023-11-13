@@ -7,8 +7,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.Book;
 import com.sprint.bspro.entity.Reviews;
+import com.sprint.bspro.repository.IAuthorRepository;
 import com.sprint.bspro.repository.IBookRepository;
 import com.sprint.bspro.repository.IReviewsRepository;
 @Service
@@ -18,11 +20,19 @@ public class BookServiceImpl implements IBookService{
 	IBookRepository bookRepository;
 	@Autowired
 	IReviewsRepository reviewsRepository;
+	@Autowired
+	IAuthorRepository authorRepository;
 	@Override
-	public Book createBook(Book b) {
-		if(b != null) {
-			bookRepository.save(b);
-			return b;
+	public Book createBook(Book b, String aname) {
+		if(b != null && aname != null) {
+			Author author = authorRepository.getAuthorByUsername(aname);
+			List<Book> books = author.getBooks();
+			b.setAuthor(author);
+			Book savedBook = bookRepository.save(b);
+			books.add(b);
+			author.setBooks(books);
+			authorRepository.save(author);
+			return savedBook;
 		}
 		return null;
 	}

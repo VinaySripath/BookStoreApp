@@ -17,6 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "All AppOrder Specific AppOrder Endpoints")
 @Entity
 public class AppOrder {
 

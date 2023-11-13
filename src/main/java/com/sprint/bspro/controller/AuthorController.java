@@ -1,5 +1,7 @@
 package com.sprint.bspro.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +34,11 @@ public class AuthorController {
 	@Autowired
 	IAuthorService authorService;
 	@PostMapping("/add")
-	public BookResponseDTO createBook(@RequestBody BookRequestDTO bdto) {
+	public BookResponseDTO createBook(@Valid @RequestBody BookRequestDTO bdto, @RequestParam String aname) {
 		BookDTOMapper bconvert = new BookDTOMapper();
 		Book book = bconvert.getBookFromBookDTO(bdto);
 		System.out.println(book.getTitle()+"   "+ book.getDescription());
-		Book b = bookService.createBook(book);
+		Book b = bookService.createBook(book, aname);
 		return bconvert.getBookDTOFromBook(b);
 	}
 	
@@ -70,7 +72,7 @@ public class AuthorController {
 	}
 	
 	@PutMapping("/updatebookinfo")
-	public BookResponseDTO updateBook(@RequestBody BookRequestDTO bdto) {
+	public BookResponseDTO updateBook(@Valid @RequestBody BookRequestDTO bdto) {
 		BookDTOMapper bconvert = new BookDTOMapper();
 		Book book = bconvert.getBookFromBookDTO(bdto);
 		System.out.println(book);
@@ -79,7 +81,7 @@ public class AuthorController {
 	}
 	
 	@PostMapping("/createauthor")
-	public AuthorResponseDTO addAuthor(@RequestBody AuthorRequestDTO authorDTO) {
+	public AuthorResponseDTO addAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
 		if(authorDTO != null) {
 			AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 			
@@ -103,7 +105,7 @@ public class AuthorController {
 	}
 	
 	@PutMapping("/updateauthor")
-	public AuthorResponseDTO updateAuthor(@RequestBody AuthorRequestDTO authorDTO) {
+	public AuthorResponseDTO updateAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
 		if(authorDTO != null) {
 			AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 			Author author = dtoConverter.getAuthorFromAuthorDTO(authorDTO);
@@ -114,7 +116,7 @@ public class AuthorController {
 	}
 	
 	@PutMapping("/updateauthorbyname")
-	public AuthorResponseDTO updateAuthorByName(@RequestBody AuthorRequestDTO authorDTO, @RequestParam String username) {
+	public AuthorResponseDTO updateAuthorByName(@Valid @RequestBody AuthorRequestDTO authorDTO, @RequestParam String username) {
 		if(authorDTO != null) {
 			AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 			Author author = dtoConverter.getAuthorFromAuthorDTO(authorDTO);

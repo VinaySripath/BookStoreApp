@@ -30,7 +30,9 @@ public class BookDTOMapper {
 		bdto.setCategory(book.getCategory());
 		bdto.setPages(book.getPages());
 		bdto.setFeedbacks(book.getFeedbacks());
-		bdto.setAuthor(book.getAuthor());
+		if(book.getAuthor()!=null) {
+			bdto.setAuthor(book.getAuthor().getUsername());
+		}
 		bdto.setAvailableQuantity(book.getAvailableQuantity());
 		return bdto;
 	}

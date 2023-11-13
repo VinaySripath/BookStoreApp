@@ -1,6 +1,8 @@
 package com.sprint.bspro.entity;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class ContactInfo {
@@ -8,6 +10,8 @@ public class ContactInfo {
 	private String houseAddress; // like ABC-123
 	private String city;
 	private String country;
+	@NotNull
+	@Email
 	private String email;
 	private long phone;
 	/**

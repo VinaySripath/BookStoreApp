@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.sprint.bspro.entity.Admin;
 import com.sprint.bspro.entity.ContactInfo;
+import com.sprint.bspro.exceptions.InvalidUserNameException;
 import com.sprint.bspro.repository.IAdminRepository;
 @Service
 public class AdminServiceImpl implements IAdminService {
@@ -61,9 +62,10 @@ public class AdminServiceImpl implements IAdminService {
 	}
 	
 	@Override
-	public Admin updateAdminByName(Admin admin, String username) {
+	public Admin updateAdminByName(Admin admin, String username) throws InvalidUserNameException {
 		if(admin != null) {
 			Admin savedAdmin = adminRepository.getAdminByUsername(username);
+			System.out.println(savedAdmin);
 			if(savedAdmin != null) {
 				if(admin.getContactInfo() != null) {
 					ContactInfo cinfo = savedAdmin.getContactInfo();
@@ -94,6 +96,9 @@ public class AdminServiceImpl implements IAdminService {
 				adminRepository.save(savedAdmin);
 				return savedAdmin;
 			}
+			else {
+				throw new InvalidUserNameException("username not found", "update admin");
+			}
 		}
 		return null;
 	}
@@ -107,9 +112,15 @@ public class AdminServiceImpl implements IAdminService {
 	}
 
 	@Override
-	public Admin viewAdminByUserName(String username) {
+	public Admin viewAdminByUserName(String username) throws InvalidUserNameException{
 		if(username != null) {
-			return adminRepository.getAdminByUsername(username);
+			Admin admin = adminRepository.getAdminByUsername(username);
+			if(admin != null) {
+				return admin;
+			}
+			else {
+				throw new InvalidUserNameException("Invalid Username: please check username","view admin");
+			}
 		}
 		return null;
 	}
