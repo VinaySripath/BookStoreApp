@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.sprint.bspro.entity.Book;
 @Service
 public interface IBookService {
-	public Book createBook(Book b);
+	public Book createBook(Book b, String aname);
 	public List<Book> listAllBooks();
 	public Book deleteBook(int bId);
 	public Book editBook(Book b);

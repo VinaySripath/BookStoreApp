@@ -2,6 +2,9 @@ package com.sprint.bspro.entity;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+
+import io.swagger.annotations.ApiModel;
+@ApiModel(description = "Details about Admin Bean")
 @Entity
 public class Admin extends BookStoreUser {
 	

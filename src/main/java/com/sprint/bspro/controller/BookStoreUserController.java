@@ -1,5 +1,7 @@
 package com.sprint.bspro.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +27,7 @@ public class BookStoreUserController {
 	private EmailServiceImpl emailService;
 	
 	@PostMapping("/check")
-	public LoginDTO validateUser(@RequestBody LoginDTO login) {
+	public LoginDTO validateUser(@Valid @RequestBody LoginDTO login) {
 		System.out.println("In post check login");
 		String s =  bookStoreUserService.appLogin(login.getUsername(), login.getPassword());
 		System.out.println(s+"-----------------");
@@ -33,7 +35,7 @@ public class BookStoreUserController {
 		return login;
 	}
 	@PostMapping("/check/username")
-	public LoginDTO validateUserName(@RequestBody LoginDTO login) {
+	public LoginDTO validateUserName(@Valid @RequestBody LoginDTO login) {
 		System.out.println("In post check login");
 		String s =  bookStoreUserService.appCheckUser(login.getUsername());
 		System.out.println(s+"-----------------");
@@ -45,7 +47,7 @@ public class BookStoreUserController {
 	}
 	
 	@PostMapping("/sendmail")
-    public String sendMail(@RequestBody MailStructure details)
+    public String sendMail(@Valid @RequestBody MailStructure details)
     {
 		System.out.println("email sent");
 		otp = (int)(Math.random()*1000000);
@@ -58,7 +60,7 @@ public class BookStoreUserController {
     }
 	
 	@PutMapping("/changepassword")
-	public Boolean resetPassword(@RequestBody ResetPasswordDTO resetPassword ) {
+	public Boolean resetPassword(@Valid @RequestBody ResetPasswordDTO resetPassword ) {
 		String otpstr = otp + "";
 		if(resetPassword.getOtp().equals(otpstr)) {
 			boolean check = bookStoreUserService.appUpdatePassword(resetPassword.getPassword(), resetPassword.getUsername());

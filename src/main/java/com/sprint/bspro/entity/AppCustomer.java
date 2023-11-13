@@ -7,6 +7,9 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "All AppCustomer Specific AppCustomer Endpoints")
 @Entity
 public class AppCustomer extends BookStoreUser{
 

@@ -3,6 +3,8 @@ package com.sprint.bspro.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +71,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/addcustomer")
-	public AppCustomerResponseDTO addCustomer(@RequestBody AppCustomerRequestDTO customerDTO) {
+	public AppCustomerResponseDTO addCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
 		if(customerDTO != null) {
 			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 			
@@ -93,7 +95,7 @@ public class CustomerController {
 	}
 	
 	@PutMapping("/updatecustomer")
-	public AppCustomerResponseDTO updateCustomer(@RequestBody AppCustomerRequestDTO customerDTO) {
+	public AppCustomerResponseDTO updateCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
 		if(customerDTO != null) {
 			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 			AppCustomer customer = dtoConverter.getAppCustomerFromAppCustomerDTO(customerDTO);
@@ -104,7 +106,7 @@ public class CustomerController {
 	}
 	
 	@PutMapping("/updatecustomerbyname")
-	public AppCustomerResponseDTO updateCustomerByUsername(@RequestBody AppCustomerRequestDTO customerDTO, @RequestParam String username) {
+	public AppCustomerResponseDTO updateCustomerByUsername(@Valid @RequestBody AppCustomerRequestDTO customerDTO, @RequestParam String username) {
 		if(customerDTO != null) {
 			
 			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
@@ -116,7 +118,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/addreview")
-	public ReviewsResponseDTO addReview(@RequestBody ReviewsRequestDTO reviewDTO, @RequestParam String reviewitem) {
+	public ReviewsResponseDTO addReview(@Valid @RequestBody ReviewsRequestDTO reviewDTO, @RequestParam String reviewitem) {
 		if(reviewDTO != null) {
 			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
 			Reviews review = dtoConverter.getReviewsFromReviewsDTO(reviewDTO);
@@ -133,7 +135,7 @@ public class CustomerController {
 	}
 	
 	@PutMapping("/updatereview")
-	public ReviewsResponseDTO updateReview(@RequestBody ReviewsRequestDTO reviewDTO) {
+	public ReviewsResponseDTO updateReview(@Valid @RequestBody ReviewsRequestDTO reviewDTO) {
 		if(reviewDTO != null) {
 			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
 			Reviews review = dtoConverter.getReviewsFromReviewsDTO(reviewDTO);
@@ -144,7 +146,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/placeorder")
-	public AppOrderResponseDTO placeOrder(@RequestBody AppOrderRequestDTO requestDTO) {
+	public AppOrderResponseDTO placeOrder(@Valid @RequestBody AppOrderRequestDTO requestDTO) {
 		if(requestDTO != null) {
 			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
 			AppOrder order = dtoMapper.getAppOrderFromAppOrderRequestDTO(requestDTO);

@@ -6,15 +6,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.validation.constraints.NotNull;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class BookStoreUser {
 
+	@ApiModelProperty(notes = "Unique UserId for all User")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userCode;
+	@NotNull
 	private String username;
+	@NotNull
 	private String password;
 	private String userrole;
 	public BookStoreUser() {

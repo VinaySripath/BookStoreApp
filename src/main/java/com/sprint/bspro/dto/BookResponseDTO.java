@@ -14,7 +14,7 @@ public class BookResponseDTO {
 	private int id;
 	private List<Reviews> feedbacks;
 	private int availableQuantity;
-	private Author author;
+	private String authorName;
 	
 	public String getTitle() {
 		return title;
@@ -64,14 +64,14 @@ public class BookResponseDTO {
 	public void setAvailableQuantity(int availableQuantity) {
 		this.availableQuantity = availableQuantity;
 	}
-	public Author getAuthor() {
-		return author;
+	public String getAuthorName() {
+		return authorName;
 	}
-	public void setAuthor(Author author) {
-		this.author = author;
+	public void setAuthor(String authorName) {
+		this.authorName = authorName;
 	}
 	public BookResponseDTO(String title, String description, int price, int pages, String category, int id,
-			List<Reviews> feedbacks, int availableQuantity, Author author) {
+			List<Reviews> feedbacks, int availableQuantity, String authorName) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -81,7 +81,7 @@ public class BookResponseDTO {
 		this.id = id;
 		this.feedbacks = feedbacks;
 		this.availableQuantity = availableQuantity;
-		this.author = author;
+		this.authorName=authorName;
 	}
 	public BookResponseDTO() {
 		super();

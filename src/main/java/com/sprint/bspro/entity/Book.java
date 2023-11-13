@@ -12,17 +12,25 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.Api;
+
+@Api(value = "All Book Specific Book Endpoints")
 @Entity
 public class Book {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int bookId;
+	@NotNull
 	private String title;
 	private String description;
 	private String category;
 	private int pages;
+	@Min(value=100)
+	@NotNull
 	private int price;
 	private int availableQuantity;
 	
