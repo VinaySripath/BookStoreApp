@@ -10,6 +10,8 @@ public interface IReviewsService {
 	public List<Reviews> listAllReviews();
 	public List<Reviews> listAllReviewsByCategory(String reviewCategory);
 	public List<Reviews> listAllReviewsByCustomer(String customerName);
+	public List<Reviews> listAllReviewsByBook(String bookName);
+	public List<Reviews> listAllReviewsByAuthor(String authorName);
 	public Reviews addReview(Reviews review);
 	public Reviews updateReview(Reviews review);
 	public Reviews viewReview(int rid);

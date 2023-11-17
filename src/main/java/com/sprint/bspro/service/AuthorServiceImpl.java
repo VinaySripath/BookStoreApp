@@ -1,5 +1,6 @@
 package com.sprint.bspro.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -7,7 +8,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprint.bspro.entity.AppOrder;
 import com.sprint.bspro.entity.Author;
+import com.sprint.bspro.entity.Book;
 import com.sprint.bspro.entity.ContactInfo;
 import com.sprint.bspro.entity.Reviews;
 import com.sprint.bspro.repository.IAuthorRepository;
@@ -19,6 +22,8 @@ public class AuthorServiceImpl implements IAuthorService{
 	IAuthorRepository authorRepository;
 	@Autowired
 	IReviewsRepository reviewsRepository;
+	@Autowired
+	IBookService bookService;
 	@Override
 	public Author createAppAuthor(Author author) {
 		if(author != null) {
@@ -34,15 +39,12 @@ public class AuthorServiceImpl implements IAuthorService{
 	public Author updateAuthor(Author author) {
 		if(author != null) {
 			int id = author.getUserCode();
-			System.out.println("customer id : "+id);
 			Author savedAuthor = authorRepository.findById(id).get();
 			if(savedAuthor != null) {
 				if(author.getContactInfo() != null) {
 					ContactInfo cinfo = savedAuthor.getContactInfo();
-					System.out.println("customer country : "+cinfo.getCountry());
 					
 					ContactInfo newInfo = author.getContactInfo();
-					System.out.println("new Country : "+newInfo.getCountry());
 					if(newInfo.getCity()!= null) {
 						cinfo.setCity(newInfo.getCity());
 					}
@@ -83,10 +85,8 @@ public class AuthorServiceImpl implements IAuthorService{
 			if(savedAuthor != null) {
 				if(author.getContactInfo() != null) {
 					ContactInfo cinfo = savedAuthor.getContactInfo();
-					System.out.println("customer country : "+cinfo.getCountry());
 					
 					ContactInfo newInfo = author.getContactInfo();
-					System.out.println("new Country : "+newInfo.getCountry());
 					if(newInfo.getCity()!= null) {
 						cinfo.setCity(newInfo.getCity());
 					}
@@ -150,10 +150,25 @@ public class AuthorServiceImpl implements IAuthorService{
 			List<Reviews> reviews = a.getFeedbacks();
 			Reviews review = reviewsRepository.findById(rid).get();
 			if(review != null) {
+				review.setAuthor(a);
 				reviews.add(review);
 				a.setFeedbacks(reviews);
 				return a;
 			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<AppOrder> getAllOrdersByAuthor(String username) {
+		if(username != null) {
+			List<AppOrder> allOrders= new ArrayList<>();
+			List<Book> books = bookService.listBooksByAuthor(username);
+			for(Book book: books) {
+				List<AppOrder> allBookOrders = bookService.getAllOrdersByBook(book.getTitle());
+				allOrders.addAll(allBookOrders);
+			}
+			return allOrders;
 		}
 		return null;
 	}

@@ -3,6 +3,9 @@ package com.sprint.bspro.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,11 +13,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sprint.bspro.dto.AdminRequestDTO;
+import com.sprint.bspro.dto.AdminResponseDTO;
+import com.sprint.bspro.dto.AppCustomerRequestDTO;
+import com.sprint.bspro.dto.AppCustomerResponseDTO;
+import com.sprint.bspro.dto.AuthorRequestDTO;
+import com.sprint.bspro.dto.AuthorResponseDTO;
 import com.sprint.bspro.dto.LoginDTO;
 import com.sprint.bspro.dto.ResetPasswordDTO;
+import com.sprint.bspro.entity.Admin;
+import com.sprint.bspro.entity.AppCustomer;
+import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.MailStructure;
+import com.sprint.bspro.security.JWTUtil;
 import com.sprint.bspro.service.EmailServiceImpl;
+import com.sprint.bspro.service.IAdminService;
+import com.sprint.bspro.service.IAppCustomerService;
+import com.sprint.bspro.service.IAuthorService;
 import com.sprint.bspro.service.IBookStoreUserService;
+import com.sprint.bspro.util.AdminDTOMapper;
+import com.sprint.bspro.util.AppCustomerDTOMapper;
+import com.sprint.bspro.util.AuthorDTOMapper;
 @CrossOrigin
 @RestController
 @RequestMapping("/login")
@@ -22,23 +41,46 @@ public class BookStoreUserController {
 	static int otp;
 	@Autowired
 	IBookStoreUserService bookStoreUserService;
+	@Autowired
+	IAdminService adminService;
+	@Autowired
+	IAuthorService authorService;
+	@Autowired
+	IAppCustomerService appCustomerService;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JWTUtil jwtUtil;
 	
 	@Autowired 
 	private EmailServiceImpl emailService;
 	
 	@PostMapping("/check")
-	public LoginDTO validateUser(@Valid @RequestBody LoginDTO login) {
-		System.out.println("In post check login");
+	public LoginDTO validateUser(@Valid @RequestBody LoginDTO login) throws Exception {
 		String s =  bookStoreUserService.appLogin(login.getUsername(), login.getPassword());
-		System.out.println(s+"-----------------");
+		
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
+			
+		} catch (Exception e) {
+			throw new Exception("Bad credentials ");
+		}
+
+		UserDetails userDetails =  bookStoreUserService.loadUserByUsername(login.getUsername());
+		
+		String token = jwtUtil.generateToken(userDetails);
+		
+		boolean isValid = token!=null?true:false;
+		login.setToken(token);
+		login.setValid(isValid);
 		login.setRole(s);
 		return login;
 	}
 	@PostMapping("/check/username")
 	public LoginDTO validateUserName(@Valid @RequestBody LoginDTO login) {
-		System.out.println("In post check login");
 		String s =  bookStoreUserService.appCheckUser(login.getUsername());
-		System.out.println(s+"-----------------");
 		if(s!=null) {
 			login.setIsUsername(true);
 			login.setEmail(s);
@@ -49,7 +91,6 @@ public class BookStoreUserController {
 	@PostMapping("/sendmail")
     public String sendMail(@Valid @RequestBody MailStructure details)
     {
-		System.out.println("email sent");
 		otp = (int)(Math.random()*1000000);
 		details.setSubject("OTP to set password for BOOK STORE APP");
 		details.setMsgBody("Please Enter this OTP to change your Password "+otp);
@@ -69,5 +110,41 @@ public class BookStoreUserController {
 		}
 		otp = (int)(Math.random()*1000000);
 		return false;
+	}
+	
+	@PostMapping("/createadmin")
+	public AdminResponseDTO addAdmin(@Valid @RequestBody AdminRequestDTO adminDTO) {
+		if(adminDTO != null) {
+			AdminDTOMapper dtoConverter = new AdminDTOMapper();
+			
+			Admin admin = dtoConverter.getAdminFromAdminDTO(adminDTO);
+			Admin savedAdmin = adminService.createAppAdmin(admin);
+			return dtoConverter.getAdminDTOFromAdmin(savedAdmin);
+		}
+		return null;
+	}
+	
+	@PostMapping("/createauthor")
+	public AuthorResponseDTO addAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
+		if(authorDTO != null) {
+			AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
+			
+			Author author = dtoConverter.getAuthorFromAuthorDTO(authorDTO);
+			Author savedAuthor = authorService.createAppAuthor(author);
+			return dtoConverter.getAuthorDTOFromAuthor(savedAuthor);
+		}
+		return null;
+	}
+	
+	@PostMapping("/addcustomer")
+	public AppCustomerResponseDTO addCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
+		if(customerDTO != null) {
+			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
+			
+			AppCustomer customer = dtoConverter.getAppCustomerFromAppCustomerDTO(customerDTO);
+			AppCustomer savedCustomer = appCustomerService.createAppCustomer(customer);
+			return dtoConverter.getAppCustomerDTOFromAppCustomer(savedCustomer);
+		}
+		return null;
 	}
 }

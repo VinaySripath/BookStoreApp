@@ -6,12 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprint.bspro.entity.Author;
+import com.sprint.bspro.entity.Book;
 import com.sprint.bspro.entity.Reviews;
+import com.sprint.bspro.repository.IAuthorRepository;
+import com.sprint.bspro.repository.IBookRepository;
 import com.sprint.bspro.repository.IReviewsRepository;
 @Service
 public class ReviewsServiceImpl implements IReviewsService {
 	@Autowired
 	IReviewsRepository reviewsRepository;
+	@Autowired
+	IBookRepository bookRepository;
+	@Autowired
+	IAuthorRepository authorRepository;
 	@Override
 	public List<Reviews> listAllReviews() {
 		return reviewsRepository.findAll();
@@ -59,6 +67,28 @@ public class ReviewsServiceImpl implements IReviewsService {
 	public List<Reviews> listAllReviewsByCustomer(String customerName) {
 		if(customerName != null) {
 			return reviewsRepository.getReviewsByCustomerName(customerName);
+		}
+		return null;
+	}
+
+	@Override
+	public List<Reviews> listAllReviewsByBook(String bookName) {
+		Book book = bookRepository.getBookByTitle(bookName);
+		if(book != null) {
+			List<Reviews> reviewlist = reviewsRepository.getReviewsByBook(book);
+			System.out.println(reviewlist.get(0).getRatings());
+			return reviewlist;
+		}
+		return null;
+	}
+
+	@Override
+	public List<Reviews> listAllReviewsByAuthor(String authorName) {
+		Author author = authorRepository.getAuthorByUsername(authorName);
+		if(author != null) {
+			List<Reviews> reviewlist = reviewsRepository.getReviewsByAuthor(author);
+			System.out.println(reviewlist.get(0).getRatings());
+			return reviewlist;
 		}
 		return null;
 	}
