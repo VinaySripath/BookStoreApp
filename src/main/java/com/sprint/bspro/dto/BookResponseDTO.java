@@ -12,7 +12,7 @@ public class BookResponseDTO {
 	private int pages;
 	private String category;
 	private int id;
-	private List<Reviews> feedbacks;
+	private List<ReviewsResponseDTO> reviewList;
 	private int availableQuantity;
 	private String authorName;
 	
@@ -52,12 +52,12 @@ public class BookResponseDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public List<Reviews> getFeedbacks() {
-		return feedbacks;
-	}
-	public void setFeedbacks(List<Reviews> feedbacks) {
-		this.feedbacks = feedbacks;
-	}
+//	public List<Reviews> getFeedbacks() {
+//		return feedbacks;
+//	}
+//	public void setFeedbacks(List<Reviews> feedbacks) {
+//		this.feedbacks = feedbacks;
+//	}
 	public int getAvailableQuantity() {
 		return availableQuantity;
 	}
@@ -70,8 +70,14 @@ public class BookResponseDTO {
 	public void setAuthor(String authorName) {
 		this.authorName = authorName;
 	}
+	public List<ReviewsResponseDTO> getReviewList() {
+		return reviewList;
+	}
+	public void setReviewList(List<ReviewsResponseDTO> reviewList) {
+		this.reviewList = reviewList;
+	}
 	public BookResponseDTO(String title, String description, int price, int pages, String category, int id,
-			List<Reviews> feedbacks, int availableQuantity, String authorName) {
+			List<ReviewsResponseDTO> reviewList, int availableQuantity, String authorName) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -79,7 +85,7 @@ public class BookResponseDTO {
 		this.pages = pages;
 		this.category = category;
 		this.id = id;
-		this.feedbacks = feedbacks;
+		this.reviewList=reviewList;
 		this.availableQuantity = availableQuantity;
 		this.authorName=authorName;
 	}

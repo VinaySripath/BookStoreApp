@@ -43,15 +43,12 @@ public class AppCustomerServiceImpl implements IAppCustomerService {
 	public AppCustomer updateCustomer(AppCustomer customer) {
 		if(customer != null) {
 			int id = customer.getUserCode();
-			System.out.println("customer id : "+id);
 			AppCustomer savedCustomer = customerRepository.findById(id).get();
 			if(savedCustomer != null) {
 				if(customer.getContactInfo() != null) {
 					ContactInfo cinfo = savedCustomer.getContactInfo();
-					System.out.println("customer country : "+cinfo.getCountry());
 					
 					ContactInfo newInfo = customer.getContactInfo();
-					System.out.println("new Country : "+newInfo.getCountry());
 					if(newInfo.getCity()!= null) {
 						cinfo.setCity(newInfo.getCity());
 					}

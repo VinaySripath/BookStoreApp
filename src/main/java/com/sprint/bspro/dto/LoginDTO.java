@@ -5,6 +5,8 @@ public class LoginDTO {
 	private String password;
 	private String role;
 	private String email;
+	private String token;
+	private boolean isValid;
 	private boolean isUsername;
 	
 	public String getUsername() {
@@ -36,6 +38,18 @@ public class LoginDTO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public boolean isValid() {
+		return isValid;
+	}
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 	public LoginDTO(String username, String password, String role) {
 		super();

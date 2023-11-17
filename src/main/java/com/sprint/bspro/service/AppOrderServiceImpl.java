@@ -31,6 +31,9 @@ public class AppOrderServiceImpl implements IAppOrderService {
 			if(order.getOrderStatus().equals("placed successfully")) {
 				order.setOrderStatus("cancelled");
 			}
+			for(Map.Entry<Book, Integer> e: order.getOrderDetails().entrySet()) {
+				e.getKey().setAvailableQuantity(e.getKey().getAvailableQuantity()+e.getValue());  
+			}
 			return order;
 		}
 		return null;
@@ -39,7 +42,6 @@ public class AppOrderServiceImpl implements IAppOrderService {
 	@Override
 	@Transactional
 	public AppOrder addOrder(AppOrder order) {
-		System.out.println("inside service--------------------------"+order.getCustomer().getUsername());
 		Map<Book,Integer> orderDetail = new HashMap<>();
 		for(Map.Entry<Book, Integer> e : order.getOrderDetails().entrySet()) {
 			String name = e.getKey().getTitle();
@@ -50,7 +52,6 @@ public class AppOrderServiceImpl implements IAppOrderService {
 		AppCustomer customer = customerRepository.getAppCustomerByUsername(user);
 		order.setOrderDetails(orderDetail);
 		order.setCustomer(customer);
-		System.out.println("inside service--------------------------"+order.getCustomer().getUsername());
 		boolean placeOrder = true;
 		for(Map.Entry<Book, Integer> e: order.getOrderDetails().entrySet()) {
 			if(e.getKey().getAvailableQuantity()<e.getValue()) {
@@ -99,6 +100,15 @@ public class AppOrderServiceImpl implements IAppOrderService {
 			if(customer != null) {
 				return orderRepository.getAppOrderByCustomer(customer);
 			}
+		}
+		return null;
+	}
+
+	@Override
+	public AppOrder viewOrderById(int oid) {
+		if(oid != 0) {
+			AppOrder order = orderRepository.findById(oid).get();
+			return order;
 		}
 		return null;
 	}

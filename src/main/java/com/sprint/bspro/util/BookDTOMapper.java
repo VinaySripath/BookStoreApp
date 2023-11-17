@@ -1,8 +1,13 @@
 package com.sprint.bspro.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sprint.bspro.dto.BookRequestDTO;
 import com.sprint.bspro.dto.BookResponseDTO;
+import com.sprint.bspro.dto.ReviewsResponseDTO;
 import com.sprint.bspro.entity.Book;
+import com.sprint.bspro.entity.Reviews;
 
 public class BookDTOMapper {
 	
@@ -29,7 +34,16 @@ public class BookDTOMapper {
 		bdto.setId(book.getBookId());
 		bdto.setCategory(book.getCategory());
 		bdto.setPages(book.getPages());
-		bdto.setFeedbacks(book.getFeedbacks());
+		if(book.getFeedbacks()!= null) {
+		List<Reviews> reviews = book.getFeedbacks();
+		List<ReviewsResponseDTO> reviewDtoList = new ArrayList<>();
+		ReviewsDTOMapper dtoMapper = new ReviewsDTOMapper();
+		for(Reviews review: reviews) {
+			ReviewsResponseDTO reviewResponse = dtoMapper.getReviewsDTOFromReviews(review);
+			reviewDtoList.add(reviewResponse);
+		}
+		bdto.setReviewList(reviewDtoList);
+		}
 		if(book.getAuthor()!=null) {
 			bdto.setAuthor(book.getAuthor().getUsername());
 		}
