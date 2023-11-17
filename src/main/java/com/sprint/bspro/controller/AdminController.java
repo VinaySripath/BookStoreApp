@@ -55,6 +55,11 @@ public class AdminController {
 	
 	@ApiOperation(value="End point to get Book by Id, takes one param - id ")
 	@GetMapping("/bookinfo")
+	
+	/** * This method retrieves a book from the Book Store App's database based on the provided book ID. 
+	**@param id The ID of the book to retrieve.
+	** @return A ResponseEntity containing a BookResponseDTO object representing the retrieved book, along with an HTTP status code. */
+	
 	public ResponseEntity<BookResponseDTO> getBookById(@RequestParam int id) {
 		 Book book = bookService.getBookById(id);
 		 BookDTOMapper brc = new BookDTOMapper();
@@ -65,6 +70,11 @@ public class AdminController {
 	
 	@ApiOperation(value="End point to get Book by book name, takes one param - title")
 	@GetMapping("/title/data")
+	/** This method retrieves a book from the Book Store App's database based on the provided book title.
+	* @param title The title of the book to retrieve. 
+	* @return A ResponseEntity containing a BookResponseDTO object representing the retrieved book, along with an HTTP status code. 
+	*/
+	
 	public ResponseEntity<BookResponseDTO> getBookByTitle(@RequestParam String title) {
 		 Book book = bookService.getBookByTitle(title);
 		 BookDTOMapper brc = new BookDTOMapper();
@@ -72,6 +82,11 @@ public class AdminController {
 		 
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
+	
+	/** * This method updates the available quantity of a book in the Book Store App's database based on the provided BookRequestDTO object.
+       * * @param requestDTO A valid BookRequestDTO object containing the updated book information.
+       * @return A BookResponseDTO object representing the updated book, or null if the requestDTO is null or the available quantity is 0.	 
+	 */
 	
 	@PutMapping("/updateinventory")
 	public BookResponseDTO updateBookQuantity(@Valid @RequestBody BookRequestDTO requestDTO){
@@ -83,6 +98,10 @@ public class AdminController {
 		return null;
 	}
 	
+	/** * This method adds a new admin to the Book Store App's database based on the provided AdminRequestDTO object.
+	* @param adminDTO A valid AdminRequestDTO object containing the details of the admin to be added.
+	* * @return An AdminResponseDTO object representing the added admin, or null if the adminDTO is null.
+	*/
 	@PostMapping("/createadmin")
 	public AdminResponseDTO addAdmin(@Valid @RequestBody AdminRequestDTO adminDTO) {
 		if(adminDTO != null) {
@@ -94,19 +113,35 @@ public class AdminController {
 		}
 		return null;
 	}
+	/** * This method retrieves an admin from the Book Store App's database based on the provided user code.
+	 * 
+	 * @param usercode The user code of the admin to retrieve. 
+	 * @return An AdminResponseDTO object representing the retrieved admin, or null if the admin is not found.
+	 */
 	
 	@GetMapping("/viewadmin")
 	public AdminResponseDTO getAdminByUserCode(@RequestParam int usercode) {
 		AdminDTOMapper dtoConverter = new AdminDTOMapper();
 		return dtoConverter.getAdminDTOFromAdmin(adminService.viewAdmin(usercode));
 	}
+	/** * This method retrieves an admin from the Book Store App's database based on the provided username.
+	 * 
+	 * @param username The username of the admin to retrieve.
+	 * @return  An AdminResponseDTO object representing the retrieved admin.
+	 * @throws InvalidUserNameException If the provided username is invalid or does not exist in the database.
+	 */
 	
 	@GetMapping("/viewadminbyname")
 	public AdminResponseDTO getAdminByUserName(@RequestParam String username) throws InvalidUserNameException{
 		AdminDTOMapper dtoConverter = new AdminDTOMapper();
 		return dtoConverter.getAdminDTOFromAdmin(adminService.viewAdminByUserName(username));
 	}
-	
+	/** *This method updates the details of an admin in the Book Store App's database based on the provided AdminRequestDTO object.
+	 * 	
+	 * @param adminDTO A valid AdminRequestDTO object containing the updated admin information.
+	 * @return An AdminResponseDTO object representing the updated admin, or null if the adminDTO is null.
+	 */
+
 	@PutMapping("/updateadmin")
 	public AdminResponseDTO updateAdmin(@Valid @RequestBody AdminRequestDTO adminDTO) {
 		if(adminDTO != null) {
@@ -117,6 +152,13 @@ public class AdminController {
 		}
 		return null;
 	}
+	/** * This method updates the details of an admin in the Book Store App's database based on the provided AdminRequestDTO object and username.
+	 * 
+	 * @param adminDTO A valid AdminRequestDTO object containing the updated admin information.
+	 * @param username The username of the admin to update.
+	 * @return An AdminResponseDTO object representing the updated admin, or null if the adminDTO is null.
+	 * @throws InvalidUserNameException If the provided username is invalid or does not exist in the database.
+	 */
 	
 	@PutMapping("/updateadminbyname")
 	public AdminResponseDTO updateAdminByName(@Valid @RequestBody AdminRequestDTO adminDTO, @RequestParam String username) throws InvalidUserNameException {
@@ -128,6 +170,13 @@ public class AdminController {
 		}
 		return null;
 	}
+	/** * This method updates the status of an author in the Book Store App's database based on the provided user code and status.
+	 * 
+	 * @param usercode The user code of the author to update.
+	 * @param status The new status to assign to the author.
+	 * @return An AuthorResponseDTO object representing the updated author, or null if either the status or usercode is invalid.
+	 */
+	
 	
 	@PutMapping("/updateauthorstatus")
 	public AuthorResponseDTO updateAuthorStatus(@RequestParam int usercode, @RequestParam String status) {
@@ -138,18 +187,37 @@ public class AdminController {
 		}
 		return null;
 	}
-	
+	/** * This method retrieves an author from the Book Store App's database based on the provided user code.
+	 * 
+	 * @param usercode The user code of the author to retrieve.
+	 * @return An AuthorResponseDTO object representing the retrieved author, or null if the author is not found.
+	 */
+
 	@GetMapping("/viewauthor")
 	public AuthorResponseDTO getAuthorByUserCode(@RequestParam int usercode) {
 		AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 		return dtoConverter.getAuthorDTOFromAuthor(authorService.viewAuthor(usercode));
 	}
+	/** * This method retrieves an author from the Book Store App's database based on the provided username.
+	 * 
+	 * @param username The username of the author to retrieve.
+	 * @return An AuthorResponseDTO object representing the retrieved author, or null if the author is not found.
+	 */
+	
 	
 	@GetMapping("/viewauthorbyname")
 	public AuthorResponseDTO getAuthorByUserName(@RequestParam String username) {
 		AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 		return dtoConverter.getAuthorDTOFromAuthor(authorService.viewAuthorByName(username));
 	}
+	
+	/** * This method updates the status of an order in the Book Store App's database based on the provided status and order ID.
+	 * 
+	 * @param status The new status to assign to the order.
+	 * @param oid The order ID of the order to update.
+	 * @return An AppOrderResponseDTO object representing the updated order, or null if either the status or oid is invalid. 
+	 */
+	
 	
 	@PutMapping("/orderstatus")
 	public AppOrderResponseDTO updateOrderStatus(@RequestParam String status, @RequestParam int oid ) {
@@ -164,7 +232,10 @@ public class AdminController {
 		}
 		return null;
 	}
-	
+	/** *@viewAllOrders method retrieves all orders from the Book Store App's database and returns them as a list of AppOrderResponseDTO objects.
+	 * 
+	 * @return A list of AppOrderResponseDTO objects representing all orders in the database.
+	 */
 	@GetMapping("/orderlist")
 	public List<AppOrderResponseDTO> viewAllOrders (){
 		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();

@@ -44,50 +44,108 @@ public class AppOrder {
 	
 	@ManyToOne
 	private AppCustomer customer;
+	
+	/**
+     * Retrieves the order number associated with this order.
+     *
+     * @return The order number.
+     */
 
 	public int getOrderNumber() {
 		return orderNumber;
 	}
 
+	/**
+     * Sets the order number for this order.
+     *
+     * @param orderNumber The order number to be set.
+     */
 	public void setOrderNumber(int orderNumber) {
 		this.orderNumber = orderNumber;
 	}
 	
+	/**
+     * Retrieves the order date associated with this order.
+     *
+     * @return The order date.
+     */
 	public String getOrderDate() {
 		return orderDate;
 	}
 
+	/**
+     * Sets the order date for this order.
+     *
+     * @param orderDate The order date to be set.
+     */
 	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
 
+	 /**
+     * Retrieves the order value associated with this order.
+     *
+     * @return The order value.
+     */
 	public int getOrderValue() {
 		return orderValue;
 	}
 
+	 /**
+     * Sets the order value for this order.
+     *
+     * @param orderValue The order value to be set.
+     */
 	public void setOrderValue(int orderValue) {
 		this.orderValue = orderValue;
 	}
 
+	/**
+     * Retrieves the order status associated with this order.
+     *
+     * @return The order status.
+     */
 	public String getOrderStatus() {
 		return orderStatus;
 	}
-
+	/**
+     * Sets the order status for this order.
+     *
+     * @param orderStatus The order status to be set.
+     */
 	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	
+	/**
+     * Retrieves the customer associated with this order.
+     *
+     * @return The AppCustomer object representing the customer.
+     */
 	public AppCustomer getCustomer() {
 		return customer;
 	}
+	 /**
+     * Sets the customer for this order.
+     *
+     * @param customer The AppCustomer object to be set.
+     */
 
 	public void setCustomer(AppCustomer customer) {
 		this.customer = customer;
 	}
-	
+	/**
+     * Retrieves the order details associated with this order.
+     *
+     * @return A Map containing the order details where keys Book objects and values are quantities.
+     */
 	public Map<Book, Integer> getOrderDetails() {
 		return orderDetails;
 	}
+	/**
+     * Sets the order details for this order.
+     *
+     * @param orderDetails A Map containing the order details where keys are Book objects and values are quantities.
+     */
 	public void setOrderDetails(Map<Book, Integer> orderDetails) {
 		this.orderDetails = orderDetails;
 	}

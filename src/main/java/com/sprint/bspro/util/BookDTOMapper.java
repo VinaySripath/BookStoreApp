@@ -5,7 +5,11 @@ import com.sprint.bspro.dto.BookResponseDTO;
 import com.sprint.bspro.entity.Book;
 
 public class BookDTOMapper {
-	
+	/** This method is used to convert a BookRequestDTO object to a Book object.
+	 * 
+	 * @param dto The BookRequestDTO object containing the book information.
+	 * @return A Book object with the information from the BookRequestDTO object.
+	 */
 	public Book getBookFromBookDTO(BookRequestDTO dto) {
 		Book bk = new Book();
 		if(dto.getId()!= 0) {
@@ -20,7 +24,11 @@ public class BookDTOMapper {
 		System.out.println("the book is ! "+ bk.getBookId());
 		return bk;
 	}
-	
+	/**  This method is used to convert a Book object to a BookResponseDTO object. 
+	 * 
+	 * @param book The Book object containing the book information.
+	 * @return A BookResponseDTO object with the information from the Book object.
+	 */
 	public BookResponseDTO getBookDTOFromBook(Book book) {
 		BookResponseDTO bdto = new BookResponseDTO();
 		bdto.setTitle(book.getTitle());

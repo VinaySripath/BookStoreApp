@@ -23,6 +23,7 @@ public class BookStoreUser {
 	@NotNull
 	private String password;
 	private String userrole;
+	
 	public BookStoreUser() {
 		super();
 		// TODO Auto-generated constructor stub

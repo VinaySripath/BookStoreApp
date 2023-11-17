@@ -6,6 +6,12 @@ import com.sprint.bspro.entity.Admin;
 import com.sprint.bspro.entity.ContactInfo;
 
 public class AdminDTOMapper {
+	
+	/** This method is used to convert an AdminRequestDTO object to an Admin object. 
+	 * 
+	 * @param reqDTO The AdminRequestDTO object containing the admin information
+	 * @return An Admin object with the information from the AdminRequestDTO object.
+	 */
 	public Admin getAdminFromAdminDTO(AdminRequestDTO reqDTO) {
 		Admin ac = new Admin();
 		ContactInfo contact = new ContactInfo();
@@ -22,6 +28,11 @@ public class AdminDTOMapper {
 		ac.setUserrole(reqDTO.getUserrole());
 		return ac;
 	}
+	/** This method is used to convert an Admin object to an AdminResponseDTO object. 
+	 * 
+	 * @param admin The Admin object containing the admin information
+	 * @return An AdminResponseDTO object with the information from the Admin object. 
+	 */
 	public AdminResponseDTO getAdminDTOFromAdmin(Admin admin) {
 		AdminResponseDTO adto = new AdminResponseDTO();
 		ContactInfo c = admin.getContactInfo();

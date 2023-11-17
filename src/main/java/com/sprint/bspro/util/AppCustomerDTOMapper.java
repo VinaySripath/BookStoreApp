@@ -6,6 +6,11 @@ import com.sprint.bspro.entity.AppCustomer;
 import com.sprint.bspro.entity.ContactInfo;
 
 public class AppCustomerDTOMapper {
+	/** This method is used to convert an AppCustomerRequestDTO object to an AppCustomer object. 
+	 * 
+	 * @param reqDTO The AppCustomerRequestDTO object containing the app customer information.
+	 * @return An AppCustomer object with the information from the AppCustomerRequestDTO object
+	 */
 	public AppCustomer getAppCustomerFromAppCustomerDTO(AppCustomerRequestDTO reqDTO) {
 		AppCustomer ac = new AppCustomer();
 		ContactInfo contact = new ContactInfo();
@@ -22,6 +27,11 @@ public class AppCustomerDTOMapper {
 		ac.setUserrole(reqDTO.getUserrole());
 		return ac;
 	}
+	/** This method is used to convert an AppCustomer object to an AppCustomerResponseDTO object.
+	 *  
+	 * @param customer The AppCustomer object containing the app customer information.
+	 * @return An AppCustomerResponseDTO object with the information from the AppCustomer object. 
+	 */
 	public AppCustomerResponseDTO getAppCustomerDTOFromAppCustomer(AppCustomer customer) {
 		AppCustomerResponseDTO adto = new AppCustomerResponseDTO();
 		ContactInfo c = customer.getContactInfo();

@@ -33,6 +33,16 @@ public class AuthorController {
 	IBookService bookService;
 	@Autowired
 	IAuthorService authorService;
+	
+	
+	/** * This method creates a new book in the Book Store App's database based on the provided BookRequestDTO object and author name.
+	 * 
+	 * @param bdto A valid BookRequestDTO object containing the details of the book to create. 
+	 * @param aname The name of the author associated with the book.
+	 * @return A BookResponseDTO object representing the newly created book.
+	 */
+	
+	
 	@PostMapping("/add")
 	public BookResponseDTO createBook(@Valid @RequestBody BookRequestDTO bdto, @RequestParam String aname) {
 		BookDTOMapper bconvert = new BookDTOMapper();
@@ -41,7 +51,11 @@ public class AuthorController {
 		Book b = bookService.createBook(book, aname);
 		return bconvert.getBookDTOFromBook(b);
 	}
-	
+	/** * This method retrieves a book from the Book Store App's database based on the provided book ID. 
+	 * 
+	 * @param id The ID of the book to retrieve.
+	 * @return A ResponseEntity object containing a BookResponseDTO object representing the retrieved book
+	 */
 	@GetMapping("/bookinfo")
 	public ResponseEntity<BookResponseDTO> getBookById(@RequestParam int id) {
 		 Book book = bookService.getBookById(id);
@@ -50,7 +64,11 @@ public class AuthorController {
 		 
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
-	
+	/** * This method retrieves a book from the Book Store App's database based on the provided title.
+	 * 
+	 * @param title The title of the book to retrieve.
+	 * @return A ResponseEntity object containing a BookResponseDTO object representing the retrieved book.
+	 */
 	@GetMapping("/title/data")
 	public ResponseEntity<BookResponseDTO> getBookByTitle(@RequestParam String title) {
 		 Book book = bookService.getBookByTitle(title);
@@ -59,6 +77,11 @@ public class AuthorController {
 		 
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
+	/** * This method deletes a book from the Book Store App's database based on the provided book ID.
+	 * 
+	 * @param id The ID of the book to delete.
+	 * @return A BookResponseDTO object representing the deleted book, or null if the book is not found. 
+	 */
 	
 	@DeleteMapping("/removebook")
 	public BookResponseDTO deleteBookById(@RequestParam int id) {
@@ -71,6 +94,12 @@ public class AuthorController {
 		 return null;
 	}
 	
+	/** * Updates a book based on the provided BookRequestDTO.
+	 * 
+	 * @param bdto The BookRequestDTO containing the updated book information.
+	 * @return 
+	 */
+	
 	@PutMapping("/updatebookinfo")
 	public BookResponseDTO updateBook(@Valid @RequestBody BookRequestDTO bdto) {
 		BookDTOMapper bconvert = new BookDTOMapper();
@@ -79,6 +108,11 @@ public class AuthorController {
 		Book b = bookService.editBook(book);
 		return bconvert.getBookDTOFromBook(b);
 	}
+	/** * Adds a new author based on the provided AuthorRequestDTO.
+	 * 
+	 * @param authorDTO The AuthorRequestDTO containing the details of the author to be added.
+	 * @return The AuthorResponseDTO representing the added author.
+	 */
 	
 	@PostMapping("/createauthor")
 	public AuthorResponseDTO addAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
@@ -91,19 +125,31 @@ public class AuthorController {
 		}
 		return null;
 	}
-	
+	/** * Retrieves an author based on the provided user code. 
+	 * 
+	 * @param usercode The user code of the author to be retrieved.
+	 * @return The AuthorResponseDTO representing the retrieved author. 
+	 */
 	@GetMapping("/viewauthor")
 	public AuthorResponseDTO getAuthorByUserCode(@RequestParam int usercode) {
 		AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 		return dtoConverter.getAuthorDTOFromAuthor(authorService.viewAuthor(usercode));
 	}
-	
+	/** * Retrieves an author based on the provided username.
+	 * 
+	 * @param username The username of the author to be retrieved.
+	 * @return The AuthorResponseDTO representing the retrieved author. 
+	 */
 	@GetMapping("/viewauthorbyname")
 	public AuthorResponseDTO getAuthorByUserName(@RequestParam String username) {
 		AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 		return dtoConverter.getAuthorDTOFromAuthor(authorService.viewAuthorByName(username));
 	}
-	
+	/** * Updates an existing author based on the provided AuthorRequestDTO.
+	 * 
+	 * @param authorDTO The AuthorRequestDTO containing the updated author information. 
+	 * @return The AuthorResponseDTO representing the updated author.
+	 */
 	@PutMapping("/updateauthor")
 	public AuthorResponseDTO updateAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
 		if(authorDTO != null) {
@@ -114,7 +160,12 @@ public class AuthorController {
 		}
 		return null;
 	}
-	
+	/** * Updates an existing author based on the provided AuthorRequestDTO and username. *
+	 * 
+	 * @param authorDTO The AuthorRequestDTO containing the updated author information.
+	 * @param username The username of the author to be updated.
+	 * @return The AuthorResponseDTO representing the updated author. 
+	 */
 	@PutMapping("/updateauthorbyname")
 	public AuthorResponseDTO updateAuthorByName(@Valid @RequestBody AuthorRequestDTO authorDTO, @RequestParam String username) {
 		if(authorDTO != null) {

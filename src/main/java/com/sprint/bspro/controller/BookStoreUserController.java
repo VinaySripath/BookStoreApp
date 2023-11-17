@@ -26,6 +26,12 @@ public class BookStoreUserController {
 	@Autowired 
 	private EmailServiceImpl emailService;
 	
+	
+	/** * Validates a user's login credentials.
+	 * 
+	 * @param login The LoginDTO containing the user's login information.
+	 * @return The LoginDTO with the user's role set after validation.
+	 */
 	@PostMapping("/check")
 	public LoginDTO validateUser(@Valid @RequestBody LoginDTO login) {
 		System.out.println("In post check login");
@@ -34,6 +40,12 @@ public class BookStoreUserController {
 		login.setRole(s);
 		return login;
 	}
+	/** * Validates a user's username.
+	 * 
+	 * @param login The LoginDTO containing the user's login information.
+	 * @return The LoginDTO with the username validation result and email set if the username exists.
+	 */
+	
 	@PostMapping("/check/username")
 	public LoginDTO validateUserName(@Valid @RequestBody LoginDTO login) {
 		System.out.println("In post check login");
@@ -45,6 +57,11 @@ public class BookStoreUserController {
 		}
 		return login;
 	}
+	/** * Sends an email using the provided MailStructure object.
+	 * 
+	 * @param details The MailStructure object containing the email details.
+	 * @return The status of the email sending operation.
+	 */
 	
 	@PostMapping("/sendmail")
     public String sendMail(@Valid @RequestBody MailStructure details)
@@ -58,7 +75,11 @@ public class BookStoreUserController {
  
         return status;
     }
-	
+	/** * Resets the password for a user based on the provided ResetPasswordDTO.
+	 * 
+	 * @param resetPassword The ResetPasswordDTO containing the user's reset password information.
+	 * @return True if the OTP (One-Time Password) matches and the password is successfully updated, false otherwise.
+	 */
 	@PutMapping("/changepassword")
 	public Boolean resetPassword(@Valid @RequestBody ResetPasswordDTO resetPassword ) {
 		String otpstr = otp + "";

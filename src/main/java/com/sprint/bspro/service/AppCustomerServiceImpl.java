@@ -15,6 +15,12 @@ public class AppCustomerServiceImpl implements IAppCustomerService {
 
 	@Autowired
 	IAppCustomerRepository customerRepository;
+	
+	/**Creates a new application customer and stores it in the data source.
+	 * 
+	 * @param customer The AppCustomer entity to be created and stored.
+	 * @return The created entity with the user code set, or null if the provided customer is null.
+	 */
 	@Override
 	public AppCustomer createAppCustomer(AppCustomer customer) {
 		if(customer != null) {
@@ -25,11 +31,20 @@ public class AppCustomerServiceImpl implements IAppCustomerService {
 		return null;
 	}
 
+	/** Retrieves a list of all application customers from the data source.
+	 * 
+	 * @return A List of AppCustomer entities representing all customers in the data source.
+	 */
 	@Override
 	public List<AppCustomer> listCustomers() {
 		return customerRepository.findAll();
 	}
 
+	/** Deletes an application customer by ID.
+	 * 
+	 * @param customerId The ID of the customer to be deleted.
+	 * @return The deleted entity if the ID is not 0 and the customer is found; otherwise, null.
+	 */
 	@Override
 	public AppCustomer deleteCustomer(int customerId){
 		if(customerId != 0) {
@@ -38,6 +53,12 @@ public class AppCustomerServiceImpl implements IAppCustomerService {
 		return null;
 	}
 
+	/** Updates an application customer's information and stores the changes in the data source.
+	 * 
+	 * @param customer The entity representing the updated information of the customer.
+	 * @return The updated entity, or null if the provided customer is null or the user code is 0.
+	 */
+	
 	@Override
 	@Transactional 
 	public AppCustomer updateCustomer(AppCustomer customer) {
@@ -77,6 +98,12 @@ public class AppCustomerServiceImpl implements IAppCustomerService {
 		}
 		return null;
 	}
+	/** Updates an application customer's information by username and stores the changes in the data source.
+	 * 
+	 * @param customer The AppCustomer entity representing the updated information of the customer.
+	 * @param username The username used to identify the customer to be updated.
+	 * @return The updated AppCustomer entity, or null if the provided customer is null or the username does not exist.
+	 */
 	
 	@Override
 	@Transactional
@@ -95,7 +122,12 @@ public class AppCustomerServiceImpl implements IAppCustomerService {
 		}
 		return null;
 	}
-
+ /** Retrieves and views an application customer from the data source based on the user code.
+  * 
+  * @param userCode The user code of the customer to be viewed.
+  * @return The AppCustomer entity associated with the provided user code, or null if no matching customer is found.
+  */
+	
 	@Override
 	public AppCustomer viewCustomer(int userCode) {
 		if(userCode != 0) {
@@ -103,7 +135,12 @@ public class AppCustomerServiceImpl implements IAppCustomerService {
 		}
 		return null;
 	}
-
+/** Retrieves and views an application customer from the data source based on the provided username.
+ * 
+ * @param username The username of the customer to be viewed.
+ * @return The AppCustomer entity associated with the provided username, or null if no matching customer is found.
+ */
+	
 	@Override
 	public AppCustomer viewCustomerByUserName(String username) {
 		if(username != null) {

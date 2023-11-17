@@ -19,6 +19,13 @@ public class AuthorServiceImpl implements IAuthorService{
 	IAuthorRepository authorRepository;
 	@Autowired
 	IReviewsRepository reviewsRepository;
+	
+	/** Creates and stores a new application author in the data source.
+	 * 
+	 * @param author The Author entity representing the details of the author to be created.
+	 * @return The created Author entity with the assigned user code,
+ *         or null if the provided author is null.
+	 */
 	@Override
 	public Author createAppAuthor(Author author) {
 		if(author != null) {
@@ -28,7 +35,11 @@ public class AuthorServiceImpl implements IAuthorService{
 		}
 		return null;
 	}
-
+/** Updates the details of an application author in the data source.
+ * 
+ * @param author The Author entity representing the updated information of the author.
+ * @return The updated Author entity, or null if the provided author is null or the user code does not exist.
+ */
 	@Override
 	@Transactional
 	public Author updateAuthor(Author author) {
@@ -74,7 +85,13 @@ public class AuthorServiceImpl implements IAuthorService{
 		}
 		return null;
 	}
-	
+	/** Updates the details of an application author by their username in the data source.
+	 * 
+	 * @param author The Author entity representing the updated information of the author.
+	 * @param username The username of the author to be updated.
+	 * @return The updated Author entity, or null if the provided author is null or no matching author
+          is found based on the username.
+	 */
 	@Override
 	@Transactional
 	public Author updateAuthorByName(Author author, String username) {
@@ -118,7 +135,13 @@ public class AuthorServiceImpl implements IAuthorService{
 		}
 		return null;
 	}
-
+/**Updates the status of an application author in the data source based on the provided user code.
+ * 
+ * @param usercode The user code of the author whose status is to be updated.
+ * @param status The new status to be set for the author.
+ * @return The updated Author entity with the new status,
+ *         or null if the provided user code is 0, the status is null, or no matching author is found.
+ */
 	@Override
 	@Transactional
 	public Author updateAuthorStatus(int usercode, String status) {
@@ -131,17 +154,34 @@ public class AuthorServiceImpl implements IAuthorService{
 		}
 		return null;
 	}
-	
+	/** Retrieves and views an application author from the data source based on the provided user code.
+	 * 
+	 * @param usercode The user code of the author to be viewed.
+	 * @return The Author entity representing the author with the provided user code.
+	 */
 	@Override
 	public Author viewAuthor(int usercode) {
 		return authorRepository.findById(usercode).get();
 	}
+	/** Retrieves and views an application author from the data source based on the provided username.
+	 * 
+	 * @param username The username of the author to be viewed.
+	 * @return The Author entity representing the author with the provided username,
+          or null if the provided username is null or no matching author is found.
+    */
 	
 	@Override
 	public Author viewAuthorByName(String username) {
 		return authorRepository.getAuthorByUsername(username);
 	}
-
+/** Adds a feedback review to the list of feedbacks for an application author in the data source.
+ * 
+ * @param username The username of the author to whom the feedback review is to be added.
+ * @param rid The ID of the feedback review to be added.
+ * @return The updated Author entity with the added feedback review,
+          or null if the provided username is null, the review ID is 0, the author does not exist,
+         the review does not exist, or the review is not successfully added.
+ */
 	@Override
 	@Transactional
 	public Author addFeedbacks(String username, int rid) {
