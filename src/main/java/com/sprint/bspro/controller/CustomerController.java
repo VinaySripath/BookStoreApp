@@ -54,6 +54,14 @@ public class CustomerController {
 	@Autowired
 	IAppOrderService orderService;
 	
+
+	
+	/** * Retrieves a book based on the provided book ID.
+	 * 
+	 * @param title The ID of the book to be retrieved.
+	 * @return A ResponseEntity containing the BookResponseDTO representing the retrieved book and the HTTP status code.
+	 */
+
 	@GetMapping("/allbooks")
 	public List<BookResponseDTO> getAllBooks(){
 		List<Book> books = bookService.listAllBooks();
@@ -113,6 +121,11 @@ public class CustomerController {
 		 
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
+	/** * Retrieves a book based on the provided book title. 
+	 * 
+	 * @param title The title of the book to be retrieved.
+	 * @return A ResponseEntity containing the BookResponseDTO representing the retrieved book and the HTTP status code.
+	 */
 	
 	@GetMapping("/title/data")
 	public ResponseEntity<BookResponseDTO> getBookByTitle(@RequestParam String title) {
@@ -122,20 +135,33 @@ public class CustomerController {
 		 
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
-	
-	
+
+	/** * Retrieves a customer based on the provided user code.
+	 * 
+	 * @param usercode The user code of the customer to be retrieved.
+	 * @return The AppCustomerResponseDTO representing the retrieved customer.
+	 */
+
 	@GetMapping("/viewcustomer")
 	public AppCustomerResponseDTO getCustomerByUserCode(@RequestParam int usercode) {
 		AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 		return dtoConverter.getAppCustomerDTOFromAppCustomer(appCustomerService.viewCustomer(usercode));
 	}
-	
+	/** * Retrieves a customer based on the provided username.
+	 * 
+	 * @param username The username of the customer to be retrieved.
+ 	 * @return The AppCustomerResponseDTO representing the retrieved customer.
+	 */
 	@GetMapping("/viewcustomerbyname")
 	public AppCustomerResponseDTO getCustomerByUserCode(@RequestParam String username) {
 		AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 		return dtoConverter.getAppCustomerDTOFromAppCustomer(appCustomerService.viewCustomerByUserName(username));
 	}
-	
+	/** * Updates the customer information based on the provided AppCustomerRequestDTO.
+	 * 
+	 * @param customerDTO The AppCustomerRequestDTO containing the updated customer information.
+	 * @return 
+	 */
 	@PutMapping("/updatecustomer")
 	public AppCustomerResponseDTO updateCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
 		if(customerDTO != null) {
@@ -146,7 +172,12 @@ public class CustomerController {
 		}
 		return null;
 	}
-	
+	/** * Updates the customer information based on the provided AppCustomerRequestDTO and username.
+	 * 
+	 * @param customerDTO The AppCustomerRequestDTO containing the updated customer information.
+	 * @param username The username of the customer to be updated.
+	 * @return The AppCustomerResponseDTO representing the updated customer, or null if the customerDTO is null.
+	 */
 	@PutMapping("/updatecustomerbyname")
 	public AppCustomerResponseDTO updateCustomerByUsername(@Valid @RequestBody AppCustomerRequestDTO customerDTO, @RequestParam String username) {
 		if(customerDTO != null) {
@@ -158,7 +189,12 @@ public class CustomerController {
 		}
 		return null;
 	}
-	
+	/** * Adds a new review based on the provided ReviewsRequestDTO and review item.
+	 * 
+	 * @param reviewDTO The ReviewsRequestDTO containing the review information. 
+	 * @param reviewitem The review item associated with the review.
+	 * @return The ReviewsResponseDTO representing the added review, or null if the reviewDTO is null.
+	 */
 	@PostMapping("/addreview")
 	public ReviewsResponseDTO addReview(@Valid @RequestBody ReviewsRequestDTO reviewDTO, @RequestParam String reviewitem) {
 		if(reviewDTO != null) {
@@ -175,6 +211,12 @@ public class CustomerController {
 		}
 		return null;
 	}
+	/**
+	 * Updates a review based on the provided ReviewsRequestDTO.
+	 *
+	 * @param reviewDTO The ReviewsRequestDTO containing the review data to be updated.
+	 * @return A ReviewsResponseDTO representing the updated review, or null if reviewDTO is null.
+	 */
 	
 	@PutMapping("/updatereview")
 	public ReviewsResponseDTO updateReview(@Valid @RequestBody ReviewsRequestDTO reviewDTO) {
@@ -186,6 +228,12 @@ public class CustomerController {
 		}
 		return null;
 	}
+	/**
+	 * Places an order based on the provided AppOrderRequestDTO.
+	 *
+	 * @param requestDTO The AppOrderRequestDTO containing the order data to be placed.
+	 * @return An AppOrderResponseDTO representing the placed order, or null if requestDTO is null.
+	 */
 	
 	@GetMapping("/viewreview/book")
 	public List<ReviewsResponseDTO> viewReviewByBook(@RequestParam String bookname) {
@@ -227,14 +275,24 @@ public class CustomerController {
 		}
 		return null;
 	}
-	
+	/**
+	 * Cancels an order based on the provided order ID.
+	 *
+	 * @param oid The unique identifier of the order to be canceled.
+	 * @return An AppOrderResponseDTO representing the canceled order, or null if the order does not exist.
+	 */
 	@PutMapping("/cancelorder")
 	public AppOrderResponseDTO cancelOrder(@RequestParam int oid) {
 		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
 		AppOrder order = orderService.cancelOrder(oid);
 		return dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
 	}
-	
+	/**
+	 * Retrieves a list of placed orders for a specific customer.
+	 *
+	 * @param username The username of the customer whose orders are to be retrieved.
+	 * @return A list of AppOrderResponseDTO objects representing the placed orders, or null if the username is null.
+	 */
 	@GetMapping("/allplacedorders")
 	public List<AppOrderResponseDTO> getAllPlacedOrders(@RequestParam String username){
 		if(username != null) {

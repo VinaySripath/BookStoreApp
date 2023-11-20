@@ -41,7 +41,10 @@ public class AppCustomer extends BookStoreUser{
 		this.fullName = fullName;
 		this.contactInfo = contactInfo;
 	}
-
+/**
+ * 
+ * @return the fullName
+ */
 	public String getFullName() {
 		return fullName;
 	}

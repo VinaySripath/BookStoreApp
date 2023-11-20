@@ -21,6 +21,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfiguration {
 
+	/** @apiInfo method returns an instance of ApiInfo,which contains information about the Book Store App's REST APIs. * *
+	  * @return an instance of ApiInfo.
+	  */
 //		public static final String AUTHORIZATION_HEADER="Authorization";
 //		
 //		private ApiKey apiKeys() {
@@ -54,6 +57,11 @@ public class SwaggerConfiguration {
 	                "License of API",
 	                "API license URL",
 	                Collections.emptyList());
-		}
+
+	    }
+
+		/** @api method returns an instance of Docket, which is used for configuring Swagger documentation for the Book Store App's API. 
+		 * @return is an instance of Docket configured.
+		*/
 		
 }
