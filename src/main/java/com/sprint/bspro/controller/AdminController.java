@@ -85,6 +85,7 @@ public class AdminController {
 	*/
 	
 	public ResponseEntity<BookResponseDTO> getBookByTitle(@RequestParam String title) {
+		logger.info("Inside get book title "+title);
 		 Book book = bookService.getBookByTitle(title);
 		 BookDTOMapper brc = new BookDTOMapper();
 		 BookResponseDTO bresponse= brc.getBookDTOFromBook(book);
