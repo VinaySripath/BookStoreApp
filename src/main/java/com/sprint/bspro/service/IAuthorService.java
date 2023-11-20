@@ -14,6 +14,8 @@ public interface IAuthorService {
 	public Author updateAuthorStatus(int usercode, String status);
 	public Author viewAuthor(int usercode);
 	public Author viewAuthorByName(String username);
+	public List<Author> viewAllAuthor();
+	public List<Author> viewAllAuthorByStatus(String status);
 	public Author addFeedbacks(String username, int rid);
 	public List<AppOrder> getAllOrdersByAuthor(String username);
 }

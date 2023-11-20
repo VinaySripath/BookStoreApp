@@ -143,6 +143,31 @@ public class AdminController {
 		return dtoConverter.getAuthorDTOFromAuthor(authorService.viewAuthor(usercode));
 	}
 	
+	@GetMapping("/viewauthor/status")
+	public List<AuthorResponseDTO> getAuthorByStatus(@RequestParam String status) {
+		if(status != null) {
+			AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
+			List<AuthorResponseDTO> authorDtoList = new ArrayList<>();
+			List<Author>authorList = authorService.viewAllAuthorByStatus(status);
+			for(Author a : authorList){
+			authorDtoList.add(dtoConverter.getAuthorDTOFromAuthor(a));
+			}
+			return authorDtoList;
+		}
+		return null;
+	}
+	
+	@GetMapping("/viewallauthor")
+	public List<AuthorResponseDTO> getAllAuthor() {
+		AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
+		List<AuthorResponseDTO> authorDtoList = new ArrayList<>();
+		List<Author>authorList = authorService.viewAllAuthor();
+		for(Author a : authorList){
+		authorDtoList.add(dtoConverter.getAuthorDTOFromAuthor(a));
+		}
+		return authorDtoList;
+	}
+	
 	@GetMapping("/viewauthorbyname")
 	public AuthorResponseDTO getAuthorByUserName(@RequestParam String username) {
 		AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
@@ -182,6 +207,36 @@ public class AdminController {
 			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
 			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
 			for(Reviews review: listReviewByBook) {
+				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
+				reviewsDtoList.add(converterReview);
+			}
+			return reviewsDtoList;
+		}
+		return null;
+	}
+	
+	@GetMapping("/viewreview/customer")
+	public List<ReviewsResponseDTO> viewReviewByCustomer(@RequestParam String cname) {
+		if(cname!= null) {
+			List<Reviews> listReviewByCustomer = reviewService.listAllReviewsByCustomer(cname);
+			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			for(Reviews review: listReviewByCustomer) {
+				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
+				reviewsDtoList.add(converterReview);
+			}
+			return reviewsDtoList;
+		}
+		return null;
+	}
+	
+	@GetMapping("/viewreview/category")
+	public List<ReviewsResponseDTO> viewReviewByCategory(@RequestParam String caname) {
+		if(caname!= null) {
+			List<Reviews> listReviewByCategory = reviewService.listAllReviewsByCategory(caname);
+			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			for(Reviews review: listReviewByCategory) {
 				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
 				reviewsDtoList.add(converterReview);
 			}

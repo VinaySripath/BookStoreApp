@@ -20,6 +20,11 @@ import com.sprint.bspro.dto.AdminResponseDTO;
 import com.sprint.bspro.entity.Admin;
 import com.sprint.bspro.exceptions.InvalidUserNameException;
 import com.sprint.bspro.service.AdminServiceImpl;
+import com.sprint.bspro.service.IAdminService;
+import com.sprint.bspro.service.IAppOrderService;
+import com.sprint.bspro.service.IAuthorService;
+import com.sprint.bspro.service.IBookService;
+import com.sprint.bspro.service.IReviewsService;
 import com.sprint.bspro.util.AdminDTOMapper;
 
 
@@ -30,7 +35,18 @@ class AdminControllerTest {
 	@Autowired
 	private MockMvc mockmvc;
 	
-		
+	@MockBean
+	IBookService bookService;
+	
+	@MockBean
+	IAuthorService authorService;
+	
+	@MockBean
+	IAppOrderService orderService;
+	
+	@MockBean
+	IReviewsService reviewService;
+	
 	@MockBean
 	private AdminServiceImpl adminService;
 	
@@ -38,12 +54,10 @@ class AdminControllerTest {
 	AdminDTOMapper adminDto;
 	
 	private AdminRequestDTO saveInput;
-	private AdminResponseDTO saveOutput;
 	
 	@BeforeEach
 	public void setup() {
 		saveInput=new AdminRequestDTO(1,"Anil","abc","Dev","AnilKumar","BMl","Banglore","India","anilkumarj@gmail",569874);
-		saveOutput=new AdminResponseDTO(1,"Anil","abc","Dev","AnilKumar","BMl","Banglore","India","anilkumarj@gmail",569874);
 	}
 	
 	@Test
@@ -67,9 +81,6 @@ class AdminControllerTest {
 						+ "\r\n"
 						+ "}"));
 		
-		
-
-				
 				
 		
 	}

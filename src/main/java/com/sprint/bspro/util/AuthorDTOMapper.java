@@ -1,10 +1,12 @@
 package com.sprint.bspro.util;
 
+import org.springframework.stereotype.Component;
+
 import com.sprint.bspro.dto.AuthorRequestDTO;
 import com.sprint.bspro.dto.AuthorResponseDTO;
 import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.ContactInfo;
-
+@Component
 public class AuthorDTOMapper {
 	public Author getAuthorFromAuthorDTO(AuthorRequestDTO reqDTO) {
 		Author ac = new Author();
@@ -41,7 +43,6 @@ public class AuthorDTOMapper {
 		adto.setNativeLanguage(author.getNativeLanguage());
 		adto.setRegion(author.getRegion());
 		adto.setStatus(author.getStatus());
-		adto.setFeedbacks(author.getFeedbacks());
 		return adto;
 	}
 }
