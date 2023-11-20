@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -18,6 +19,10 @@ public class Reviews {
 	private int ratings;
 	private String reviewCategory;
 	private String customerName;
+	@ManyToOne
+	private Book book;
+	@ManyToOne
+	private Author author;
 	/**
 	 * @return the rid
 	 */
@@ -90,6 +95,30 @@ public class Reviews {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
+	/**
+	 * @return the book
+	 */
+	public Book getBook() {
+		return book;
+	}
+	/**
+	 * @param book the book to set
+	 */
+	public void setBook(Book book) {
+		this.book = book;
+	}
+	/**
+	 * @return the author
+	 */
+	public Author getAuthor() {
+		return author;
+	}
+	/**
+	 * @param author the author to set
+	 */
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
 	public Reviews(int rid, String comment, String reviewDate, int ratings, String reviewCategory, String customerName) {
 		super();
 		this.rid = rid;
@@ -102,5 +131,21 @@ public class Reviews {
 	public Reviews() {
 		super();
 	}
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+	
 	
 }

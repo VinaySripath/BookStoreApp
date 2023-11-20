@@ -44,10 +44,8 @@ public class AdminServiceImpl implements IAdminService {
 			if(savedAdmin != null) {
 				if(admin.getContactInfo() != null) {
 					ContactInfo cinfo = savedAdmin.getContactInfo();
-					System.out.println("customer country : "+cinfo.getCountry());
 					
 					ContactInfo newInfo = admin.getContactInfo();
-					System.out.println("new Country : "+newInfo.getCountry());
 					if(newInfo.getCity()!= null) {
 						cinfo.setCity(newInfo.getCity());
 					}
@@ -87,7 +85,6 @@ public class AdminServiceImpl implements IAdminService {
 	public Admin updateAdminByName(Admin admin, String username) throws InvalidUserNameException {
 		if(admin != null) {
 			Admin savedAdmin = adminRepository.getAdminByUsername(username);
-			System.out.println(savedAdmin);
 			if(savedAdmin != null) {
 				if(admin.getContactInfo() != null) {
 					ContactInfo cinfo = savedAdmin.getContactInfo();

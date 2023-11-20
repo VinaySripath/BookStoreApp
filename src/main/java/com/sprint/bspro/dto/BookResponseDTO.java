@@ -12,7 +12,7 @@ public class BookResponseDTO {
 	private int pages;
 	private String category;
 	private int id;
-	private List<Reviews> feedbacks;
+	private List<ReviewsResponseDTO> reviewList;
 	private int availableQuantity;
 	private String authorName;
 	
@@ -113,23 +113,7 @@ public class BookResponseDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	/**
-	 * This method is used to get the feedbacks.
-	 *
-	 * @return List<Reviews> This returns the list of feedbacks.
-	 */
 	
-	public List<Reviews> getFeedbacks() {
-		return feedbacks;
-	}
-	/**
-	 * This method is used to set the feedbacks.
-	 *
-	 * @param feedbacks A list of Reviews representing the feedbacks.
-	 */
-	public void setFeedbacks(List<Reviews> feedbacks) {
-		this.feedbacks = feedbacks;
-	}
 	/**
 	 * This method is used to get the availableQuantity.
 	 *
@@ -138,6 +122,7 @@ public class BookResponseDTO {
 	public int getAvailableQuantity() {
 		return availableQuantity;
 	}
+	
 	/**
 	 * This method is used to set the availableQuantity.
 	 *
@@ -162,8 +147,26 @@ public class BookResponseDTO {
 	public void setAuthor(String authorName) {
 		this.authorName = authorName;
 	}
+	
+	/**
+	 * This method is used to get the feedbacks.
+	 *
+	 * @return List<Reviews> This returns the list of feedbacks.
+	 */
+	public List<ReviewsResponseDTO> getReviewList() {
+		return reviewList;
+	}
+	
+	/**
+	 * This method is used to set the feedbacks.
+	 *
+	 * @param feedbacks A list of Reviews representing the feedbacks.
+	 */
+	public void setReviewList(List<ReviewsResponseDTO> reviewList) {
+		this.reviewList = reviewList;
+	}
 	public BookResponseDTO(String title, String description, int price, int pages, String category, int id,
-			List<Reviews> feedbacks, int availableQuantity, String authorName) {
+			List<ReviewsResponseDTO> reviewList, int availableQuantity, String authorName) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -171,7 +174,7 @@ public class BookResponseDTO {
 		this.pages = pages;
 		this.category = category;
 		this.id = id;
-		this.feedbacks = feedbacks;
+		this.reviewList=reviewList;
 		this.availableQuantity = availableQuantity;
 		this.authorName=authorName;
 	}

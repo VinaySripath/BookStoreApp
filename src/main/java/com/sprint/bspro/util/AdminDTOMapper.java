@@ -1,10 +1,12 @@
 package com.sprint.bspro.util;
 
+import org.springframework.stereotype.Component;
+
 import com.sprint.bspro.dto.AdminRequestDTO;
 import com.sprint.bspro.dto.AdminResponseDTO;
 import com.sprint.bspro.entity.Admin;
 import com.sprint.bspro.entity.ContactInfo;
-
+@Component
 public class AdminDTOMapper {
 	
 	/** This method is used to convert an AdminRequestDTO object to an Admin object. 

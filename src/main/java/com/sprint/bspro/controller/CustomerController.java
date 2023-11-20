@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ import com.sprint.bspro.util.ReviewsDTOMapper;
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
+@Validated
 public class CustomerController {
 	@Autowired
 	IBookService bookService;
@@ -52,12 +54,64 @@ public class CustomerController {
 	@Autowired
 	IAppOrderService orderService;
 	
+
 	
 	/** * Retrieves a book based on the provided book ID.
 	 * 
 	 * @param title The ID of the book to be retrieved.
 	 * @return A ResponseEntity containing the BookResponseDTO representing the retrieved book and the HTTP status code.
 	 */
+
+	@GetMapping("/allbooks")
+	public List<BookResponseDTO> getAllBooks(){
+		List<Book> books = bookService.listAllBooks();
+		List<BookResponseDTO> booksDtos = new ArrayList<>();
+		BookDTOMapper brc = new BookDTOMapper();
+		for(Book book: books) {
+			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
+			booksDtos.add(bookDto);
+		}
+		return booksDtos;
+	}
+	
+	@GetMapping("/searchbooks")
+	public List<BookResponseDTO> getAllBooksBySearch(@RequestParam String key){
+		List<Book> books = bookService.listBooksBySearch(key);
+		List<BookResponseDTO> booksDtos = new ArrayList<>();
+		BookDTOMapper brc = new BookDTOMapper();
+		for(Book book: books) {
+			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
+			booksDtos.add(bookDto);
+		}
+		return booksDtos;
+	}
+	
+	@GetMapping("/allbooks/category")
+	public List<BookResponseDTO> getAllBooksByCategory(@RequestParam String category){
+		List<Book> books = bookService.listBooksByCategory(category);
+		List<BookResponseDTO> booksDtos = new ArrayList<>();
+		BookDTOMapper brc = new BookDTOMapper();
+		for(Book book: books) {
+			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
+			booksDtos.add(bookDto);
+		}
+		return booksDtos;
+	}
+	
+	@GetMapping("/viewbook/author")
+	public List<BookResponseDTO> viewBookByAuthor(@RequestParam String authorname) {
+		if(authorname!= null) {
+			List<Book> listBookByAuthor = bookService.listBooksByAuthor(authorname);
+			List<BookResponseDTO> booksDtoList = new ArrayList<>();
+			BookDTOMapper dtoConverter = new BookDTOMapper();
+			for(Book book: listBookByAuthor) {
+				BookResponseDTO converterBook = dtoConverter.getBookDTOFromBook(book);
+				booksDtoList.add(converterBook);
+			}
+			return booksDtoList;
+		}
+		return null;
+	}
 	
 	@GetMapping("/bookinfo")
 	public ResponseEntity<BookResponseDTO> getBookById(@RequestParam int id) {
@@ -87,6 +141,7 @@ public class CustomerController {
 	 * @return The AppCustomerResponseDTO representing the added customer, or null if the customerDTO is null.
 	 */
 	
+
 	@PostMapping("/addcustomer")
 	public AppCustomerResponseDTO addCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
 		if(customerDTO != null) {
@@ -103,6 +158,7 @@ public class CustomerController {
 	 * @param usercode The user code of the customer to be retrieved.
 	 * @return The AppCustomerResponseDTO representing the retrieved customer.
 	 */
+
 	@GetMapping("/viewcustomer")
 	public AppCustomerResponseDTO getCustomerByUserCode(@RequestParam int usercode) {
 		AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
@@ -196,6 +252,36 @@ public class CustomerController {
 	 * @return An AppOrderResponseDTO representing the placed order, or null if requestDTO is null.
 	 */
 	
+	@GetMapping("/viewreview/book")
+	public List<ReviewsResponseDTO> viewReviewByBook(@RequestParam String bookname) {
+		if(bookname!= null) {
+			List<Reviews> listReviewByBook = reviewService.listAllReviewsByBook(bookname);
+			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			for(Reviews review: listReviewByBook) {
+				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
+				reviewsDtoList.add(converterReview);
+			}
+			return reviewsDtoList;
+		}
+		return null;
+	}
+	
+	@GetMapping("/viewreview/author")
+	public List<ReviewsResponseDTO> viewReviewByAuthor(@RequestParam String authorname) {
+		if(authorname!= null) {
+			List<Reviews> listReviewByAuthor = reviewService.listAllReviewsByAuthor(authorname);
+			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			for(Reviews review: listReviewByAuthor) {
+				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
+				reviewsDtoList.add(converterReview);
+			}
+			return reviewsDtoList;
+		}
+		return null;
+	}
+	
 	@PostMapping("/placeorder")
 	public AppOrderResponseDTO placeOrder(@Valid @RequestBody AppOrderRequestDTO requestDTO) {
 		if(requestDTO != null) {
@@ -236,5 +322,12 @@ public class CustomerController {
 			return orderResponseList;
 		}
 		return null;
+	}
+	
+	@GetMapping("/vieworderbyid")
+	public AppOrderResponseDTO viewOrderById(@RequestParam int oid) {
+		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+		AppOrder order = orderService.viewOrderById(oid);
+		return dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
 	}
 }

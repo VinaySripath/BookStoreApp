@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,19 +24,23 @@ import com.sprint.bspro.dto.AppOrderResponseDTO;
 import com.sprint.bspro.dto.AuthorResponseDTO;
 import com.sprint.bspro.dto.BookRequestDTO;
 import com.sprint.bspro.dto.BookResponseDTO;
+import com.sprint.bspro.dto.ReviewsResponseDTO;
 import com.sprint.bspro.entity.Admin;
 import com.sprint.bspro.entity.AppOrder;
 import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.Book;
+import com.sprint.bspro.entity.Reviews;
 import com.sprint.bspro.exceptions.InvalidUserNameException;
 import com.sprint.bspro.service.IAdminService;
 import com.sprint.bspro.service.IAppOrderService;
 import com.sprint.bspro.service.IAuthorService;
 import com.sprint.bspro.service.IBookService;
+import com.sprint.bspro.service.IReviewsService;
 import com.sprint.bspro.util.AdminDTOMapper;
 import com.sprint.bspro.util.AppOrderDTOMapper;
 import com.sprint.bspro.util.AuthorDTOMapper;
 import com.sprint.bspro.util.BookDTOMapper;
+import com.sprint.bspro.util.ReviewsDTOMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,8 +48,9 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @RestController
 @RequestMapping("/admin")
+@Validated
 public class AdminController {
-	@Autowired
+	@Autowired   
 	IBookService bookService;
 	@Autowired
 	IAdminService adminService;
@@ -52,13 +58,16 @@ public class AdminController {
 	IAuthorService authorService;
 	@Autowired
 	IAppOrderService orderService;
+	@Autowired
+	IReviewsService reviewService;
 	
 	@ApiOperation(value="End point to get Book by Id, takes one param - id ")
 	@GetMapping("/bookinfo")
 	
 	/** * This method retrieves a book from the Book Store App's database based on the provided book ID. 
-	**@param id The ID of the book to retrieve.
-	** @return A ResponseEntity containing a BookResponseDTO object representing the retrieved book, along with an HTTP status code. */
+	*@param id The ID of the book to retrieve.
+	* @return A ResponseEntity containing a BookResponseDTO object representing the retrieved book, along with an HTTP status code. 
+	*/
 	
 	public ResponseEntity<BookResponseDTO> getBookById(@RequestParam int id) {
 		 Book book = bookService.getBookById(id);
@@ -83,8 +92,8 @@ public class AdminController {
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
 	
-	/** * This method updates the available quantity of a book in the Book Store App's database based on the provided BookRequestDTO object.
-       * * @param requestDTO A valid BookRequestDTO object containing the updated book information.
+	/** This method updates the available quantity of a book in the Book Store App's database based on the provided BookRequestDTO object.
+       * @param requestDTO A valid BookRequestDTO object containing the updated book information.
        * @return A BookResponseDTO object representing the updated book, or null if the requestDTO is null or the available quantity is 0.	 
 	 */
 	
@@ -218,7 +227,6 @@ public class AdminController {
 	 * @return An AppOrderResponseDTO object representing the updated order, or null if either the status or oid is invalid. 
 	 */
 	
-	
 	@PutMapping("/orderstatus")
 	public AppOrderResponseDTO updateOrderStatus(@RequestParam String status, @RequestParam int oid ) {
 		if(status != null && oid != 0) {
@@ -246,5 +254,165 @@ public class AdminController {
 			allOrdersDto.add(orderDto);
 		}
 		return allOrdersDto;
+	}
+	/** * Returns a list of reviews for a given book.
+	 * 
+	 * @param bookname the name of the book to retrieve reviews for
+	 * @return a list of reviews for the given book
+	 */
+	@GetMapping("/viewreview/book")
+	public List<ReviewsResponseDTO> viewReviewByBook(@RequestParam String bookname) {
+		if(bookname!= null) {
+			List<Reviews> listReviewByBook = reviewService.listAllReviewsByBook(bookname);
+			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			for(Reviews review: listReviewByBook) {
+				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
+				reviewsDtoList.add(converterReview);
+			}
+			return reviewsDtoList;
+		}
+		return null;
+	}
+	/** * Returns a list of reviews for a given author.
+	 * 
+	 * @param authorname the name of the author to retrieve reviews for
+	 * @return a list of reviews for the given author
+	 */
+	
+	@GetMapping("/viewreview/author")
+	public List<ReviewsResponseDTO> viewReviewByAuthor(@RequestParam String authorname) {
+		if(authorname!= null) {
+			List<Reviews> listReviewByAuthor = reviewService.listAllReviewsByAuthor(authorname);
+			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
+			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
+			for(Reviews review: listReviewByAuthor) {
+				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
+				reviewsDtoList.add(converterReview);
+			}
+			return reviewsDtoList;
+		}
+		return null;
+	}
+	
+	/** * Returns a list of books for a given category.
+	 * 
+	 * @param category the category of the books to retrieve
+	 * @return a list of books for the given category
+	 */
+	@GetMapping("/allbooks/category")
+	public List<BookResponseDTO> getAllBooksByCategory(@RequestParam String category){
+		List<Book> books = bookService.listBooksByCategory(category);
+		List<BookResponseDTO> booksDtos = new ArrayList<>();
+		BookDTOMapper brc = new BookDTOMapper();
+		for(Book book: books) {
+			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
+			booksDtos.add(bookDto);
+		}
+		return booksDtos;
+	}
+	/** Returns a list of books that match the given search key.
+	 * 
+	 * @param key the search key to use
+	 * @return a list of books that match the given search key
+	 */
+	@GetMapping("/searchbooks")
+	public List<BookResponseDTO> getAllBooksBySearch(@RequestParam String key){
+		List<Book> books = bookService.listBooksBySearch(key);
+		List<BookResponseDTO> booksDtos = new ArrayList<>();
+		BookDTOMapper brc = new BookDTOMapper();
+		for(Book book: books) {
+			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
+			booksDtos.add(bookDto);
+		}
+		return booksDtos;
+	}
+	/** Returns a list of books for a given author.
+	 * 
+	 * @param authorname the name of the author to retrieve books for
+	 * @return a list of books for the given author
+	 */
+	@GetMapping("/viewbook/author")
+	public List<BookResponseDTO> viewBookByAuthor(@RequestParam String authorname) {
+		if(authorname!= null) {
+			List<Book> listBookByAuthor = bookService.listBooksByAuthor(authorname);
+			List<BookResponseDTO> booksDtoList = new ArrayList<>();
+			BookDTOMapper dtoConverter = new BookDTOMapper();
+			for(Book book: listBookByAuthor) {
+				BookResponseDTO converterBook = dtoConverter.getBookDTOFromBook(book);
+				booksDtoList.add(converterBook);
+			}
+			return booksDtoList;
+		}
+		return null;
+	}
+	
+	@GetMapping("/allbooks/quantity")
+	public List<BookResponseDTO> getAllBooksByQuantity(@RequestParam int maxquant){
+		List<Book> books = bookService.getBookByQuantity(maxquant);
+		List<BookResponseDTO> booksDtos = new ArrayList<>();
+		BookDTOMapper brc = new BookDTOMapper();
+		for(Book book: books) {
+			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
+			booksDtos.add(bookDto);
+		}
+		return booksDtos;
+	}
+	
+	@GetMapping("/getorder/book")
+	public List<AppOrderResponseDTO> getAllOrdersByBook(@RequestParam String bookname) {
+		if(bookname != null) {
+			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+			List<AppOrder> bookOrders = bookService.getAllOrdersByBook(bookname);
+			List<AppOrderResponseDTO> bookOrdersDto = new ArrayList<>();
+			for(AppOrder order: bookOrders) {
+				AppOrderResponseDTO appOrderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
+				bookOrdersDto.add(appOrderDto);
+			}
+			return bookOrdersDto;
+		}
+		return null;
+	}
+	
+	@GetMapping("/getorder/author")
+	public List<AppOrderResponseDTO> getAllOrdersByAuthor(@RequestParam String authorname) {
+		if(authorname != null) {
+			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+			List<AppOrder> bookOrders = authorService.getAllOrdersByAuthor(authorname);
+			List<AppOrderResponseDTO> bookOrdersDto = new ArrayList<>();
+			for(AppOrder order: bookOrders) {
+				AppOrderResponseDTO appOrderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
+				bookOrdersDto.add(appOrderDto);
+			}
+			return bookOrdersDto;
+		}
+		return null;
+	}
+	
+	@GetMapping("/getallorder")
+	public List<AppOrderResponseDTO> getAllOrders() {
+			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+			List<AppOrder> bookOrders = orderService.viewAllOrders();
+			List<AppOrderResponseDTO> bookOrdersDto = new ArrayList<>();
+			for(AppOrder order: bookOrders) {
+				AppOrderResponseDTO appOrderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
+				bookOrdersDto.add(appOrderDto);
+			}
+			return bookOrdersDto;
+	}
+	
+	@GetMapping("/getorder/bookcategory")
+	public List<AppOrderResponseDTO> getAllOrdersByBookCategory(@RequestParam String category) {
+		if(category != null) {
+			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
+			List<AppOrder> bookOrders = bookService.getAllOrdersByBookCategory(category);
+			List<AppOrderResponseDTO> bookOrdersDto = new ArrayList<>();
+			for(AppOrder order: bookOrders) {
+				AppOrderResponseDTO appOrderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
+				bookOrdersDto.add(appOrderDto);
+			}
+			return bookOrdersDto;
+		}
+		return null;
 	}
 }

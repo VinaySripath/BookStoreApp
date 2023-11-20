@@ -14,4 +14,5 @@ public interface IBookStoreUserRepository extends JpaRepository<BookStoreUser, I
 	 */
 	
 	public BookStoreUser getBookStoreUserByUsername(String username);
+
 }

@@ -1,5 +1,6 @@
 package com.sprint.bspro.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -7,12 +8,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprint.bspro.dto.AppOrderResponseDTO;
+import com.sprint.bspro.entity.AppOrder;
 import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.Book;
 import com.sprint.bspro.entity.Reviews;
 import com.sprint.bspro.repository.IAuthorRepository;
 import com.sprint.bspro.repository.IBookRepository;
 import com.sprint.bspro.repository.IReviewsRepository;
+import com.sprint.bspro.util.AppOrderDTOMapper;
 @Service
 public class BookServiceImpl implements IBookService{
 
@@ -121,7 +125,8 @@ public class BookServiceImpl implements IBookService{
 	
 	@Override
 	public Book getBookByTitle(String title ) {
-		return bookRepository.getBookByTitle(title);
+		Book book = bookRepository.getBookByTitle(title);
+		return book;
 	}
 	/** Retrieves a list of books from the data source based on the provided category.
 	 * 
@@ -143,12 +148,12 @@ public class BookServiceImpl implements IBookService{
 	@Override
 	@Transactional
 	public Book addFeedbacks(String title, int rid) {
-		System.out.println("in add feedback to books------ "+title+"  "+rid);
 		Book book = bookRepository.getBookByTitle(title);
 		if(book != null) {
 			List<Reviews> reviews = book.getFeedbacks();
 			Reviews review = reviewsRepository.findById(rid).get();
 			if(review != null) {
+				review.setBook(book);
 				reviews.add(review);
 				book.setFeedbacks(reviews);
 				return book;
@@ -173,6 +178,51 @@ public class BookServiceImpl implements IBookService{
 			book.setAvailableQuantity(quantity);
 		}
 		return book;
+	}
+
+	@Override
+	public List<Book> listBooksByAuthor(String authorname) {
+		Author author = authorRepository.getAuthorByUsername(authorname);
+		if(author != null) {
+			List<Book> booklist = bookRepository.getBookByAuthor(author);
+			return booklist;
+		}
+		return null;
+	}
+
+	@Override
+	public List<Book> listBooksBySearch(String key) {
+		if(key != null) {
+			return bookRepository.findByTitleContaining(key);
+		}
+		return null;
+	}
+
+	@Override
+	public List<AppOrder> getAllOrdersByBook(String bookname) {
+		Book book = bookRepository.getBookByTitle(bookname);
+		if(book != null) {
+			return book.getOrders();
+		}
+		return null;
+	}
+
+	@Override
+	public List<AppOrder> getAllOrdersByBookCategory(String category) {
+		if(category != null) {
+			List<Book> books = bookRepository.getBookByCategory(category);
+			List<AppOrder> allOrders = new ArrayList<>();
+			for(Book book: books) {
+				allOrders.addAll(book.getOrders());
+			}
+			return allOrders;
+		}
+		return null;
+	}
+
+	@Override
+	public List<Book> getBookByQuantity(int maxQuantity) {
+		return bookRepository.findByAvailableQuantityLessThanEqual(maxQuantity);
 	}
 
 }

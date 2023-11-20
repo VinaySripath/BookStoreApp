@@ -1,7 +1,10 @@
 package com.sprint.bspro.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.sprint.bspro.entity.AppOrder;
 import com.sprint.bspro.entity.Author;
 @Service
 public interface IAuthorService {
@@ -12,5 +15,5 @@ public interface IAuthorService {
 	public Author viewAuthor(int usercode);
 	public Author viewAuthorByName(String username);
 	public Author addFeedbacks(String username, int rid);
-	
+	public List<AppOrder> getAllOrdersByAuthor(String username);
 }

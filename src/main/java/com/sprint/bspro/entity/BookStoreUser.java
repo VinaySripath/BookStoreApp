@@ -1,5 +1,6 @@
 package com.sprint.bspro.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class BookStoreUser {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userCode;
 	@NotNull
+	@Column(unique = true)
 	private String username;
 	@NotNull
 	private String password;
@@ -83,7 +85,21 @@ public class BookStoreUser {
 	public void setUserrole(String userrole) {
 		this.userrole = userrole;
 	}
-	
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
 	
 	
 }

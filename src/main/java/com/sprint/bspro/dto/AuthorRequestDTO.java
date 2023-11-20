@@ -1,5 +1,7 @@
 package com.sprint.bspro.dto;
 
+import javax.validation.constraints.Email;
+
 public class AuthorRequestDTO {
 	private int userCode;
 	private String password;
@@ -9,6 +11,7 @@ public class AuthorRequestDTO {
 	private String houseAddress;
 	private String city;
 	private String country;
+	@Email
 	private String email;
 	private long phone;
 	private String region;

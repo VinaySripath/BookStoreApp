@@ -1,10 +1,12 @@
 package com.sprint.bspro.util;
 
+import org.springframework.stereotype.Component;
+
 import com.sprint.bspro.dto.AppCustomerRequestDTO;
 import com.sprint.bspro.dto.AppCustomerResponseDTO;
 import com.sprint.bspro.entity.AppCustomer;
 import com.sprint.bspro.entity.ContactInfo;
-
+@Component
 public class AppCustomerDTOMapper {
 	/** This method is used to convert an AppCustomerRequestDTO object to an AppCustomer object. 
 	 * 
