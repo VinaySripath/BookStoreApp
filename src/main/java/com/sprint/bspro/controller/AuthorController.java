@@ -159,23 +159,8 @@ public class AuthorController {
 		Book b = bookService.editBook(book);
 		return bconvert.getBookDTOFromBook(b);
 	}
-	/** * Adds a new author based on the provided AuthorRequestDTO.
-	 * 
-	 * @param authorDTO The AuthorRequestDTO containing the details of the author to be added.
-	 * @return The AuthorResponseDTO representing the added author.
-	 */
 	
-	@PostMapping("/createauthor")
-	public AuthorResponseDTO addAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
-		if(authorDTO != null) {
-			AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
-			
-			Author author = dtoConverter.getAuthorFromAuthorDTO(authorDTO);
-			Author savedAuthor = authorService.createAppAuthor(author);
-			return dtoConverter.getAuthorDTOFromAuthor(savedAuthor);
-		}
-		return null;
-	}
+	
 	/** * Retrieves an author based on the provided user code. 
 	 * 
 	 * @param usercode The user code of the author to be retrieved.

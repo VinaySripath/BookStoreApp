@@ -133,6 +133,10 @@ public class BookStoreUserController {
 		return false;
 	}
 	
+	/** * This method adds a new admin to the Book Store App's database based on the provided AdminRequestDTO object.
+	* @param adminDTO A valid AdminRequestDTO object containing the details of the admin to be added.
+	* * @return An AdminResponseDTO object representing the added admin, or null if the adminDTO is null.
+	*/
 	@PostMapping("/createadmin")
 	public AdminResponseDTO addAdmin(@Valid @RequestBody AdminRequestDTO adminDTO) {
 		if(adminDTO != null) {
@@ -145,6 +149,11 @@ public class BookStoreUserController {
 		return null;
 	}
 	
+	/** * Adds a new author based on the provided AuthorRequestDTO.
+	 * 
+	 * @param authorDTO The AuthorRequestDTO containing the details of the author to be added.
+	 * @return The AuthorResponseDTO representing the added author.
+	 */
 	@PostMapping("/createauthor")
 	public AuthorResponseDTO addAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
 		if(authorDTO != null) {
@@ -157,6 +166,11 @@ public class BookStoreUserController {
 		return null;
 	}
 	
+	/** * Adds a new customer based on the provided AppCustomerRequestDTO.
+	 * 
+	 * @param customerDTO The AppCustomerRequestDTO containing the customer information.
+	 * @return The AppCustomerResponseDTO representing the added customer, or null if the customerDTO is null.
+	 */
 	@PostMapping("/addcustomer")
 	public AppCustomerResponseDTO addCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
 		if(customerDTO != null) {

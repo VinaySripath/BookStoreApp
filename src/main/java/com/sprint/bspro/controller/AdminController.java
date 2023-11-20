@@ -107,21 +107,6 @@ public class AdminController {
 		return null;
 	}
 	
-	/** * This method adds a new admin to the Book Store App's database based on the provided AdminRequestDTO object.
-	* @param adminDTO A valid AdminRequestDTO object containing the details of the admin to be added.
-	* * @return An AdminResponseDTO object representing the added admin, or null if the adminDTO is null.
-	*/
-	@PostMapping("/createadmin")
-	public AdminResponseDTO addAdmin(@Valid @RequestBody AdminRequestDTO adminDTO) {
-		if(adminDTO != null) {
-			AdminDTOMapper dtoConverter = new AdminDTOMapper();
-			
-			Admin admin = dtoConverter.getAdminFromAdminDTO(adminDTO);
-			Admin savedAdmin = adminService.createAppAdmin(admin);
-			return dtoConverter.getAdminDTOFromAdmin(savedAdmin);
-		}
-		return null;
-	}
 	/** * This method retrieves an admin from the Book Store App's database based on the provided user code.
 	 * 
 	 * @param usercode The user code of the admin to retrieve. 

@@ -135,24 +135,7 @@ public class CustomerController {
 		 
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
-	/** * Adds a new customer based on the provided AppCustomerRequestDTO.
-	 * 
-	 * @param customerDTO The AppCustomerRequestDTO containing the customer information.
-	 * @return The AppCustomerResponseDTO representing the added customer, or null if the customerDTO is null.
-	 */
-	
 
-	@PostMapping("/addcustomer")
-	public AppCustomerResponseDTO addCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
-		if(customerDTO != null) {
-			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
-			
-			AppCustomer customer = dtoConverter.getAppCustomerFromAppCustomerDTO(customerDTO);
-			AppCustomer savedCustomer = appCustomerService.createAppCustomer(customer);
-			return dtoConverter.getAppCustomerDTOFromAppCustomer(savedCustomer);
-		}
-		return null;
-	}
 	/** * Retrieves a customer based on the provided user code.
 	 * 
 	 * @param usercode The user code of the customer to be retrieved.
