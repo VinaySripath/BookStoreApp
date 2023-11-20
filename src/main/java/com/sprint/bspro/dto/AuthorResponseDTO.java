@@ -1,8 +1,5 @@
 package com.sprint.bspro.dto;
 
-import java.util.List;
-
-import com.sprint.bspro.entity.Reviews;
 
 public class AuthorResponseDTO {
 	private int userCode;
@@ -18,7 +15,6 @@ public class AuthorResponseDTO {
 	private String region;
 	private String nativeLanguage;
 	private String status;
-	private List<Reviews> feedbacks;
 	
 	/**
 	 * Retrieves the userCode associated with this object.
@@ -228,26 +224,10 @@ public class AuthorResponseDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	/**
-	 * Retrieves the list of reviews (feedbacks).
-	 *
-	 * @return A List of Reviews containing feedbacks.
-	 */
-	public List<Reviews> getFeedbacks() {
-		return feedbacks;
-	}
-	/**
-	 * Sets the list of reviews (feedbacks).
-	 *
-	 * @param feedbacks A List of Reviews containing feedbacks to be set.
-	 */
-	
-	public void setFeedbacks(List<Reviews> feedbacks) {
-		this.feedbacks = feedbacks;
-	}
+
 	public AuthorResponseDTO(int userCode, String password, String username, String userrole, String name,
 			String houseAddress, String city, String country, String email, long phone, String region,
-			String nativeLanguage, String status, List<Reviews> feedbacks) {
+			String nativeLanguage, String status) {
 		super();
 		this.userCode = userCode;
 		this.password = password;
@@ -262,7 +242,6 @@ public class AuthorResponseDTO {
 		this.region = region;
 		this.nativeLanguage = nativeLanguage;
 		this.status = status;
-		this.feedbacks = feedbacks;
 	}
 	public AuthorResponseDTO() {
 		super();

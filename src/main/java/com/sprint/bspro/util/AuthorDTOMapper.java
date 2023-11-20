@@ -53,7 +53,6 @@ public class AuthorDTOMapper {
 		adto.setNativeLanguage(author.getNativeLanguage());
 		adto.setRegion(author.getRegion());
 		adto.setStatus(author.getStatus());
-		adto.setFeedbacks(author.getFeedbacks());
 		return adto;
 	}
 }

@@ -216,4 +216,14 @@ public class AuthorServiceImpl implements IAuthorService{
 		return null;
 	}
 
+	@Override
+	public List<Author> viewAllAuthor() {
+		return authorRepository.findAll();
+	}
+
+	@Override
+	public List<Author> viewAllAuthorByStatus(String status) {
+		return authorRepository.findByStatus(status);
+	}
+
 }
