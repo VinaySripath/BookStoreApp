@@ -57,6 +57,12 @@ public class BookStoreUserController {
 	@Autowired 
 	private EmailServiceImpl emailService;
 	
+	
+	/** * Validates a user's login credentials.
+	 * 
+	 * @param login The LoginDTO containing the user's login information.
+	 * @return The LoginDTO with the user's role set after validation.
+	 */
 	@PostMapping("/check")
 	public LoginDTO validateUser(@Valid @RequestBody LoginDTO login) throws Exception {
 		String s =  bookStoreUserService.appLogin(login.getUsername(), login.getPassword());
@@ -78,6 +84,12 @@ public class BookStoreUserController {
 		login.setRole(s);
 		return login;
 	}
+	/** * Validates a user's username.
+	 * 
+	 * @param login The LoginDTO containing the user's login information.
+	 * @return The LoginDTO with the username validation result and email set if the username exists.
+	 */
+	
 	@PostMapping("/check/username")
 	public LoginDTO validateUserName(@Valid @RequestBody LoginDTO login) {
 		String s =  bookStoreUserService.appCheckUser(login.getUsername());
@@ -87,6 +99,11 @@ public class BookStoreUserController {
 		}
 		return login;
 	}
+	/** * Sends an email using the provided MailStructure object.
+	 * 
+	 * @param details The MailStructure object containing the email details.
+	 * @return The status of the email sending operation.
+	 */
 	
 	@PostMapping("/sendmail")
     public String sendMail(@Valid @RequestBody MailStructure details)
@@ -99,7 +116,11 @@ public class BookStoreUserController {
  
         return status;
     }
-	
+	/** * Resets the password for a user based on the provided ResetPasswordDTO.
+	 * 
+	 * @param resetPassword The ResetPasswordDTO containing the user's reset password information.
+	 * @return True if the OTP (One-Time Password) matches and the password is successfully updated, false otherwise.
+	 */
 	@PutMapping("/changepassword")
 	public Boolean resetPassword(@Valid @RequestBody ResetPasswordDTO resetPassword ) {
 		String otpstr = otp + "";
@@ -112,6 +133,10 @@ public class BookStoreUserController {
 		return false;
 	}
 	
+	/** * This method adds a new admin to the Book Store App's database based on the provided AdminRequestDTO object.
+	* @param adminDTO A valid AdminRequestDTO object containing the details of the admin to be added.
+	* * @return An AdminResponseDTO object representing the added admin, or null if the adminDTO is null.
+	*/
 	@PostMapping("/createadmin")
 	public AdminResponseDTO addAdmin(@Valid @RequestBody AdminRequestDTO adminDTO) {
 		if(adminDTO != null) {
@@ -124,6 +149,11 @@ public class BookStoreUserController {
 		return null;
 	}
 	
+	/** * Adds a new author based on the provided AuthorRequestDTO.
+	 * 
+	 * @param authorDTO The AuthorRequestDTO containing the details of the author to be added.
+	 * @return The AuthorResponseDTO representing the added author.
+	 */
 	@PostMapping("/createauthor")
 	public AuthorResponseDTO addAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
 		if(authorDTO != null) {
@@ -136,6 +166,11 @@ public class BookStoreUserController {
 		return null;
 	}
 	
+	/** * Adds a new customer based on the provided AppCustomerRequestDTO.
+	 * 
+	 * @param customerDTO The AppCustomerRequestDTO containing the customer information.
+	 * @return The AppCustomerResponseDTO representing the added customer, or null if the customerDTO is null.
+	 */
 	@PostMapping("/addcustomer")
 	public AppCustomerResponseDTO addCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
 		if(customerDTO != null) {

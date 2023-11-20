@@ -1,11 +1,18 @@
 package com.sprint.bspro.util;
 
+import org.springframework.stereotype.Component;
+
 import com.sprint.bspro.dto.AuthorRequestDTO;
 import com.sprint.bspro.dto.AuthorResponseDTO;
 import com.sprint.bspro.entity.Author;
 import com.sprint.bspro.entity.ContactInfo;
-
+@Component
 public class AuthorDTOMapper {
+	/** This method is used to convert an AuthorRequestDTO object to an Author object.
+	 * 
+	 * @param reqDTO The AuthorRequestDTO object containing the author information.
+	 * @return An Author object with the information from the AuthorRequestDTO object
+	 */
 	public Author getAuthorFromAuthorDTO(AuthorRequestDTO reqDTO) {
 		Author ac = new Author();
 		ContactInfo contact = new ContactInfo();
@@ -25,6 +32,11 @@ public class AuthorDTOMapper {
 		ac.setStatus(reqDTO.getStatus());
 		return ac;
 	}
+	/** This method is used to convert an Author object to an AuthorResponseDTO object.
+	 * 
+	 * @param author The Author object containing the author information.
+	 * @return An AuthorResponseDTO object with the information from the Author object.
+	 */
 	public AuthorResponseDTO getAuthorDTOFromAuthor(Author author) {
 		AuthorResponseDTO adto = new AuthorResponseDTO();
 		ContactInfo c = author.getContactInfo();

@@ -17,6 +17,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ServerSideValidations extends ResponseEntityExceptionHandler {
 
+	/** Handle method arguments that fail validation by providing a custom error response.
+	 * 
+	 * @param exp The MethodArgumentNotValidException representing the validation failure.
+	 * @param headers The HttpHeaders to be included in the response.
+	 * @param status The HttpStatus to be included in the response.
+	 * @param request The WebRequest providing information about the request.
+	 * @return A ResponseEntity Object containing a map of property names and error messages as the response body,
+         with HttpStatus set to BAD_REQUEST (400).
+	 */
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exp,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {

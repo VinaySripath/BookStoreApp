@@ -13,17 +13,36 @@ public class Admin extends BookStoreUser {
 	@Embedded
 	private ContactInfo contactInfo;
 	
+	/**
+     * Retrieves the full name associated with this entity.
+     *
+     * @return The full name of the entity.
+     */
+	
 	public String getFullName() {
 		return fullName;
 	}
-
+	/**
+     * Sets the full name for this entity.
+     *
+     * @param fullName The full name to be set for the entity.
+     */
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-
+	/**
+     * Retrieves the contact information associated with this entity.
+     *
+     * @return The contact information of the entity. It may be null if no contact information is set.
+     */
 	public ContactInfo getContactInfo() {
 		return contactInfo;
 	}
+	/**
+     * Sets the contact information for this entity.
+     *
+     * @param contactInfo The {@code ContactInfo} object to be set for the entity. It can be {@code null}.
+     */
 
 	public void setContactInfo(ContactInfo contactInfo) {
 		this.contactInfo = contactInfo;

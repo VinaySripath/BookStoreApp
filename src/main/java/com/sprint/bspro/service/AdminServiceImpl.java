@@ -11,6 +11,13 @@ import com.sprint.bspro.repository.IAdminRepository;
 public class AdminServiceImpl implements IAdminService {
 	@Autowired
 	IAdminRepository adminRepository;
+	
+	/** Creates a new application administrator and persists it in the database.
+	 * 
+	 * @param admin The Admin object to be created and persisted.
+	 * @return The created and persisted Admin object with the assigned user code,
+       or null if the input admin object is null.
+	 */
 	@Override
 	public Admin createAppAdmin(Admin admin) {
 		if(admin != null) {
@@ -21,6 +28,13 @@ public class AdminServiceImpl implements IAdminService {
 		return null;
 	}
 
+	/** Updates an existing administrator's information in the database based on the provided @code Admin object.
+	 * 
+	 * @param admin The Admin object containing the updated information for the administrator.
+	 * @return The updated Admin object with the modified information,
+ *         or null if the input admin object is null or if no matching admin is found.
+	 */
+	
 	@Override
 	public Admin updateAdmin(Admin admin) {
 		if(admin != null) {
@@ -58,7 +72,15 @@ public class AdminServiceImpl implements IAdminService {
 		}
 		return null;
 	}
-	
+	/** Updates an existing administrator's information in the database based on the provided object and username.
+	 * 
+	 * @param admin object containing the updated information for the administrator.
+	 * @param username The username of the admin to be updated.
+	 * @return The updated object with the modified information,
+            or null if the input admin object is null or if the username is not found.
+	 * @throws InvalidUserNameException If the provided username is not found in the database during the update attempt.
+	 */
+	 
 	@Override
 	public Admin updateAdminByName(Admin admin, String username) throws InvalidUserNameException {
 		if(admin != null) {
@@ -99,7 +121,13 @@ public class AdminServiceImpl implements IAdminService {
 		}
 		return null;
 	}
-
+  /** Retrieves and returns an Admin information from the database based on the provided user code.
+   * 
+   * @param userCode The user code uniquely identifying the admin to be viewed.
+   * @return The Admin object representing the administrator with the provided user code,
+         or null if the user code is zero or if no matching administrator is found.
+   */
+	
 	@Override
 	public Admin viewAdmin(int userCode) {
 		if(userCode != 0) {
@@ -107,7 +135,13 @@ public class AdminServiceImpl implements IAdminService {
 		}
 		return null;
 	}
-
+/** Retrieves and returns an administrator's information from the database based on the provided username.
+ * 
+ * @param username The username uniquely identifying the administrator to be viewed.
+ * @return The object representing the administrator with the provided username.
+ * @throws InvalidUserNameException If the provided username is null or if no matching administrator is found,
+          indicating an invalid username during the view attempt.
+ */
 	@Override
 	public Admin viewAdminByUserName(String username) throws InvalidUserNameException{
 		if(username != null) {

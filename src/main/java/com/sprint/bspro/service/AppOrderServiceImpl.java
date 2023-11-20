@@ -23,6 +23,13 @@ public class AppOrderServiceImpl implements IAppOrderService {
 	IAppCustomerRepository customerRepository;
 	@Autowired
 	IBookRepository bookRepository;
+	
+	/** Cancels an application order based on the provided order ID.
+	 * 
+	 * @param oid The order ID of the order to be cancelled.
+	 * @return The AppOrder entity with the updated status after cancellation,
+        or null if the provided order ID is 0 or no matching order is found.
+     */	
 	@Override
 	@Transactional
 	public AppOrder cancelOrder(int oid) {
@@ -38,21 +45,29 @@ public class AppOrderServiceImpl implements IAppOrderService {
 		}
 		return null;
 	}
+	/** Adds an application order to the system.
+	 * 
+	 * @param order The AppOrder entity representing the order to be added.
+	 * @return The saved AppOrder entity if the order is successfully placed; otherwise, null.
+	 */
 
 	@Override
 	@Transactional
 	public AppOrder addOrder(AppOrder order) {
 		Map<Book,Integer> orderDetail = new HashMap<>();
+		
 		for(Map.Entry<Book, Integer> e : order.getOrderDetails().entrySet()) {
-			String name = e.getKey().getTitle();
+			String name = e.getKey().getTitle();//
 			Book book = bookRepository.getBookByTitle(name);
 			orderDetail.put(book, e.getValue());
 		}
-		String user = order.getCustomer().getUsername();
+		String user = order.getCustomer().getUsername();//
 		AppCustomer customer = customerRepository.getAppCustomerByUsername(user);
 		order.setOrderDetails(orderDetail);
 		order.setCustomer(customer);
 		boolean placeOrder = true;
+		
+		
 		for(Map.Entry<Book, Integer> e: order.getOrderDetails().entrySet()) {
 			if(e.getKey().getAvailableQuantity()<e.getValue()) {
 				placeOrder = false;
@@ -66,6 +81,7 @@ public class AppOrderServiceImpl implements IAppOrderService {
 			}
 			List<AppOrder> ordersList = customer.getAllPlacedOrders();
 			ordersList.add(order);
+			
 			AppOrder savedOrder = orderRepository.save(order);
 			for(Map.Entry<Book, Integer> e: order.getOrderDetails().entrySet()) {
 				List<AppOrder>bookOrders = e.getKey().getOrders();
@@ -76,7 +92,13 @@ public class AppOrderServiceImpl implements IAppOrderService {
 		}
 		return null;
 	}
-
+/** Updates the status of an application order based on the provided order ID.
+ * 
+ * @param status The new status to be set for the order.
+ * @param oid The order ID of the order to have its status updated.
+ * @return The AppOrder entity with the updated status,
+          or null if the provided order ID is 0, no matching order is found, or the provided status is null.
+ */
 	@Override
 	@Transactional
 	public AppOrder updateOrderStatus(String status, int oid) {
@@ -87,12 +109,21 @@ public class AppOrderServiceImpl implements IAppOrderService {
 		}
 		return null;
 	}
-
+ /**Retrieves and views a list of all application orders from the data source.
+ * 
+ * @return A List of entities representing all orders in the data source, 
+         or an empty list if there are no orders.
+ */
 	@Override
 	public List<AppOrder> viewAllOrders() {
 		return orderRepository.findAll();
 	}
-
+/** Retrieves and views a list of application orders associated with a specific customer from the data source.
+ * 
+ * @param username The username of the customer whose orders are to be viewed.
+ * @return A List of AppOrder entities representing orders associated with the specified customer,
+ *         or null if the provided username is null or no matching customer is found.
+ */
 	@Override
 	public List<AppOrder> viewOrdersByCustomer(String username) {
 		if(username != null) {

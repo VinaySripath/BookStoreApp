@@ -14,6 +14,12 @@ public class EmailServiceImpl implements IEmailService {
 	 
     @Value("${spring.mail.username}") private String sender;
     
+    /** This method is used to send a simple email.
+     * 
+     * @param details The details of the email including recipient, message body, and subject.
+     * @return A string indicating the status of the email sending process. 
+     */
+    
 	@Override
 	public String sendSimpleMail(MailStructure details) {
 		try {
