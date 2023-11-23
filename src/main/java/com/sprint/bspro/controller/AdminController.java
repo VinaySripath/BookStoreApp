@@ -430,18 +430,6 @@ public class AdminController {
 		return null;
 	}
 	
-//	@GetMapping("/getallorder")
-//	public List<AppOrderResponseDTO> getAllOrders() {
-//			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
-//			List<AppOrder> bookOrders = orderService.viewAllOrders();
-//			List<AppOrderResponseDTO> bookOrdersDto = new ArrayList<>();
-//			for(AppOrder order: bookOrders) {
-//				AppOrderResponseDTO appOrderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
-//				bookOrdersDto.add(appOrderDto);
-//			}
-//			return bookOrdersDto;
-//	}
-	
 	@GetMapping("/getorder/bookcategory")
 	public List<AppOrderResponseDTO> getAllOrdersByBookCategory(@RequestParam String category) {
 		if(category != null) {
