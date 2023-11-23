@@ -58,6 +58,7 @@ public class AppOrderServiceImpl implements IAppOrderService {
 		
 		for(Map.Entry<Book, Integer> e : order.getOrderDetails().entrySet()) {
 			String name = e.getKey().getTitle();//
+			System.out.println("title--------------------"+name);
 			Book book = bookRepository.getBookByTitle(name);
 			orderDetail.put(book, e.getValue());
 		}

@@ -104,7 +104,6 @@ public class ReviewsServiceImpl implements IReviewsService {
 		Book book = bookRepository.getBookByTitle(bookName);
 		if(book != null) {
 			List<Reviews> reviewlist = reviewsRepository.getReviewsByBook(book);
-			System.out.println(reviewlist.get(0).getRatings());
 			return reviewlist;
 		}
 		return null;

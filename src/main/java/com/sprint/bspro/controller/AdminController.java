@@ -238,7 +238,7 @@ public class AdminController {
 	 */
 	
 	@PutMapping("/orderstatus")
-	public AppOrderResponseDTO updateOrderStatus(@RequestParam String status, @RequestParam int oid ) {
+	public AppOrderResponseDTO updateOrderStatus(@RequestBody String status, @RequestParam int oid ) {
 		if(status != null && oid != 0) {
 			AppOrder updatedOrder = orderService.updateOrderStatus(status, oid);
 			if(updatedOrder != null) {
@@ -258,6 +258,7 @@ public class AdminController {
 	public List<AppOrderResponseDTO> viewAllOrders (){
 		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
 		List<AppOrder> allOrders = orderService.viewAllOrders();
+		
 		List<AppOrderResponseDTO> allOrdersDto = new ArrayList<>();
 		for(AppOrder order : allOrders) {
 			AppOrderResponseDTO orderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
@@ -427,18 +428,6 @@ public class AdminController {
 			return bookOrdersDto;
 		}
 		return null;
-	}
-	
-	@GetMapping("/getallorder")
-	public List<AppOrderResponseDTO> getAllOrders() {
-			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
-			List<AppOrder> bookOrders = orderService.viewAllOrders();
-			List<AppOrderResponseDTO> bookOrdersDto = new ArrayList<>();
-			for(AppOrder order: bookOrders) {
-				AppOrderResponseDTO appOrderDto = dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
-				bookOrdersDto.add(appOrderDto);
-			}
-			return bookOrdersDto;
 	}
 	
 	@GetMapping("/getorder/bookcategory")

@@ -65,6 +65,10 @@ public class BookServiceImpl implements IBookService{
 	public Book deleteBook(int bId) {
 		try {
 			Book b = bookRepository.findById(bId).get();
+			 Author author = b.getAuthor();
+			 List<Book> books = author.getBooks();
+			 books.remove(b);
+			 authorRepository.save(author);
 			bookRepository.deleteById(bId);
 			return b;
 		}
@@ -175,7 +179,8 @@ public class BookServiceImpl implements IBookService{
 	public Book updateAvailableQuantity(String title, int quantity) {
 		Book book = bookRepository.getBookByTitle(title);
 		if(book != null) {
-			book.setAvailableQuantity(quantity);
+			int presentQuantity = book.getAvailableQuantity();
+			book.setAvailableQuantity(presentQuantity+ quantity);
 		}
 		return book;
 	}

@@ -153,7 +153,7 @@ public class CustomerController {
  	 * @return The AppCustomerResponseDTO representing the retrieved customer.
 	 */
 	@GetMapping("/viewcustomerbyname")
-	public AppCustomerResponseDTO getCustomerByUserCode(@RequestParam String username) {
+	public AppCustomerResponseDTO getCustomerByUserName(@RequestParam String username) {
 		AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 		return dtoConverter.getAppCustomerDTOFromAppCustomer(appCustomerService.viewCustomerByUserName(username));
 	}
