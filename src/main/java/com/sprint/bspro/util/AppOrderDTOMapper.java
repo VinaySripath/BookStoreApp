@@ -49,7 +49,6 @@ public class AppOrderDTOMapper {
 	 */
 	public AppOrderResponseDTO getAppOrderResponseDTOFromAppOrder(AppOrder appOrder) {
 		AppOrderResponseDTO responseDTO = new AppOrderResponseDTO();
-		CartDTO cart = new CartDTO();
 		responseDTO.setCustomerName(appOrder.getCustomer().getUsername());
 		responseDTO.setOrderDate(appOrder.getOrderDate());
 		responseDTO.setOrderNumber(appOrder.getOrderNumber());
@@ -58,6 +57,7 @@ public class AppOrderDTOMapper {
 		Map<Book,Integer> orderMap = appOrder.getOrderDetails();
 		List<CartDTO> orderDetails = new ArrayList<>();
 		for(Map.Entry<Book,Integer> e: orderMap.entrySet()) {
+			CartDTO cart = new CartDTO();
 			cart.setBookName(e.getKey().getTitle());
 			cart.setUnits(e.getValue());
 			orderDetails.add(cart);
