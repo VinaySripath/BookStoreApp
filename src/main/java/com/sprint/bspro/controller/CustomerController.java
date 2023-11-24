@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +55,7 @@ public class CustomerController {
 	IAuthorService authorService;
 	@Autowired
 	IAppOrderService orderService;
+	Logger logger = LoggerFactory.getLogger(AuthorController.class);
 	
 
 	
@@ -64,6 +67,7 @@ public class CustomerController {
 
 	@GetMapping("/allbooks")
 	public List<BookResponseDTO> getAllBooks(){
+		logger.info("Request received to get all books");
 		List<Book> books = bookService.listAllBooks();
 		List<BookResponseDTO> booksDtos = new ArrayList<>();
 		BookDTOMapper brc = new BookDTOMapper();
@@ -71,11 +75,13 @@ public class CustomerController {
 			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
 			booksDtos.add(bookDto);
 		}
+		 logger.info("---------ALL BOOK RETRIVED SUCCESSFULLY------");		 
 		return booksDtos;
 	}
 	
 	@GetMapping("/searchbooks")
 	public List<BookResponseDTO> getAllBooksBySearch(@RequestParam String key){
+		logger.info("Request received to get all book by search", key);
 		List<Book> books = bookService.listBooksBySearch(key);
 		List<BookResponseDTO> booksDtos = new ArrayList<>();
 		BookDTOMapper brc = new BookDTOMapper();
@@ -83,11 +89,13 @@ public class CustomerController {
 			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
 			booksDtos.add(bookDto);
 		}
+		 logger.info("---SUCCESSFULLY RETRIVES ALL BOOKS BY SEARCH---");		 
 		return booksDtos;
 	}
 	
 	@GetMapping("/allbooks/category")
 	public List<BookResponseDTO> getAllBooksByCategory(@RequestParam String category){
+		logger.info("Request received to get all book by category", category);
 		List<Book> books = bookService.listBooksByCategory(category);
 		List<BookResponseDTO> booksDtos = new ArrayList<>();
 		BookDTOMapper brc = new BookDTOMapper();
@@ -95,11 +103,13 @@ public class CustomerController {
 			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
 			booksDtos.add(bookDto);
 		}
+		 logger.info("---SUCCESSFULLY RETRIVES ALL BOOKS BY CATEGORY---",category);		 
 		return booksDtos;
 	}
 	
 	@GetMapping("/viewbook/author")
 	public List<BookResponseDTO> viewBookByAuthor(@RequestParam String authorname) {
+		logger.info("Request received to view books by author name", authorname);
 		if(authorname!= null) {
 			List<Book> listBookByAuthor = bookService.listBooksByAuthor(authorname);
 			List<BookResponseDTO> booksDtoList = new ArrayList<>();
@@ -108,6 +118,7 @@ public class CustomerController {
 				BookResponseDTO converterBook = dtoConverter.getBookDTOFromBook(book);
 				booksDtoList.add(converterBook);
 			}
+			 logger.info("---SUCCESSFULLY RETRIVES ALL BOOKS BY AUTHOR NAME---",authorname);		 
 			return booksDtoList;
 		}
 		return null;
@@ -118,7 +129,7 @@ public class CustomerController {
 		 Book book = bookService.getBookById(id);
 		 BookDTOMapper brc = new BookDTOMapper();
 		 BookResponseDTO bresponse= brc.getBookDTOFromBook(book);
-		 
+	     logger.info("---SUCCESSFULLY RETRIVED BOOK BY ID---", id);
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
 	/** * Retrieves a book based on the provided book title. 
@@ -132,7 +143,7 @@ public class CustomerController {
 		 Book book = bookService.getBookByTitle(title);
 		 BookDTOMapper brc = new BookDTOMapper();
 		 BookResponseDTO bresponse= brc.getBookDTOFromBook(book);
-		 
+	     logger.info("---SUCCESSFULLU RETRIVED BOOK BY TITLE---", title);
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
 
@@ -144,7 +155,9 @@ public class CustomerController {
 
 	@GetMapping("/viewcustomer")
 	public AppCustomerResponseDTO getCustomerByUserCode(@RequestParam int usercode) {
+        logger.info("Request received to get customer by user Code", usercode);
 		AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
+        logger.info("---SUCCESSFULLU RETRIVED CUSTOMER BY USERCODE----.");
 		return dtoConverter.getAppCustomerDTOFromAppCustomer(appCustomerService.viewCustomer(usercode));
 	}
 	/** * Retrieves a customer based on the provided username.
@@ -154,7 +167,9 @@ public class CustomerController {
 	 */
 	@GetMapping("/viewcustomerbyname")
 	public AppCustomerResponseDTO getCustomerByUserName(@RequestParam String username) {
+        logger.info("Request received to get customer by user name", username);
 		AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
+        logger.info("---SUCCESSFULLU RETRIVED CUSTOMER BY USERNAME----.");
 		return dtoConverter.getAppCustomerDTOFromAppCustomer(appCustomerService.viewCustomerByUserName(username));
 	}
 	/** * Updates the customer information based on the provided AppCustomerRequestDTO.
@@ -164,10 +179,12 @@ public class CustomerController {
 	 */
 	@PutMapping("/updatecustomer")
 	public AppCustomerResponseDTO updateCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
+        logger.info("Request received to Update Customer Information", customerDTO);
 		if(customerDTO != null) {
 			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 			AppCustomer customer = dtoConverter.getAppCustomerFromAppCustomerDTO(customerDTO);
 			AppCustomer savedCustomer = appCustomerService.updateCustomer(customer);
+            logger.info("---SUCCESSFULLY UPDATED CUSTOMER INFORMATION---");
 			return dtoConverter.getAppCustomerDTOFromAppCustomer(savedCustomer);
 		}
 		return null;
@@ -180,11 +197,13 @@ public class CustomerController {
 	 */
 	@PutMapping("/updatecustomerbyname")
 	public AppCustomerResponseDTO updateCustomerByUsername(@Valid @RequestBody AppCustomerRequestDTO customerDTO, @RequestParam String username) {
+        logger.info("Request received to Update Customer by username", customerDTO, username);
 		if(customerDTO != null) {
 			
 			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 			AppCustomer customer = dtoConverter.getAppCustomerFromAppCustomerDTO(customerDTO);
 			AppCustomer savedCustomer = appCustomerService.updateCustomerByUsername(customer, username);
+            logger.info("--SYCCESSFULLY UPDATED CUSTOMER BY USERNAME---");
 			return dtoConverter.getAppCustomerDTOFromAppCustomer(savedCustomer);
 		}
 		return null;
@@ -197,6 +216,7 @@ public class CustomerController {
 	 */
 	@PostMapping("/addreview")
 	public ReviewsResponseDTO addReview(@Valid @RequestBody ReviewsRequestDTO reviewDTO, @RequestParam String reviewitem) {
+        logger.info("Request received to add reviews", reviewDTO, reviewitem);
 		if(reviewDTO != null) {
 			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
 			Reviews review = dtoConverter.getReviewsFromReviewsDTO(reviewDTO);
@@ -207,6 +227,7 @@ public class CustomerController {
 			if(savedReview.getReviewCategory().equals("book")) {
 				bookService.addFeedbacks(reviewitem, savedReview.getRid());
 			}
+			 logger.info(" SUCCESSFULLY REVIWES ARE ADDED:");
 			return dtoConverter.getReviewsDTOFromReviews(savedReview);
 		}
 		return null;
@@ -220,10 +241,12 @@ public class CustomerController {
 	
 	@PutMapping("/updatereview")
 	public ReviewsResponseDTO updateReview(@Valid @RequestBody ReviewsRequestDTO reviewDTO) {
+        logger.info("Request received to update reviews", reviewDTO);
 		if(reviewDTO != null) {
 			ReviewsDTOMapper dtoConverter = new ReviewsDTOMapper();
 			Reviews review = dtoConverter.getReviewsFromReviewsDTO(reviewDTO);
 			Reviews savedReview = reviewService.updateReview(review);
+            logger.info("SUCCESSFULLY Updated review");
 			return dtoConverter.getReviewsDTOFromReviews(savedReview);
 		}
 		return null;
@@ -237,6 +260,7 @@ public class CustomerController {
 	
 	@GetMapping("/viewreview/book")
 	public List<ReviewsResponseDTO> viewReviewByBook(@RequestParam String bookname) {
+        logger.info("Request reveived to view reviews by book name", bookname);
 		if(bookname!= null) {
 			List<Reviews> listReviewByBook = reviewService.listAllReviewsByBook(bookname);
 			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
@@ -245,6 +269,7 @@ public class CustomerController {
 				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
 				reviewsDtoList.add(converterReview);
 			}
+            logger.info("SUCCESSFULLY RETRIVED REVIEWS BY BOOK NAME", bookname);
 			return reviewsDtoList;
 		}
 		return null;
@@ -252,6 +277,7 @@ public class CustomerController {
 	
 	@GetMapping("/viewreview/author")
 	public List<ReviewsResponseDTO> viewReviewByAuthor(@RequestParam String authorname) {
+        logger.info("Request reveived to view reviews by author name", authorname);
 		if(authorname!= null) {
 			List<Reviews> listReviewByAuthor = reviewService.listAllReviewsByAuthor(authorname);
 			List<ReviewsResponseDTO> reviewsDtoList = new ArrayList<>();
@@ -260,6 +286,7 @@ public class CustomerController {
 				ReviewsResponseDTO converterReview = dtoConverter.getReviewsDTOFromReviews(review);
 				reviewsDtoList.add(converterReview);
 			}
+            logger.info("SUCCESSFULLY RETRIVED REVIEWS BY AUTHOR NAME", authorname);
 			return reviewsDtoList;
 		}
 		return null;
@@ -267,10 +294,12 @@ public class CustomerController {
 	
 	@PostMapping("/placeorder")
 	public AppOrderResponseDTO placeOrder(@Valid @RequestBody AppOrderRequestDTO requestDTO) {
+        logger.info("Request reveived to place an order", requestDTO);
 		if(requestDTO != null) {
 			AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
 			AppOrder order = dtoMapper.getAppOrderFromAppOrderRequestDTO(requestDTO);
 			AppOrder placedOrder = orderService.addOrder(order);
+            logger.info("SUCCESSFULLY Placed order");
 			return dtoMapper.getAppOrderResponseDTOFromAppOrder(placedOrder);
 		}
 		return null;
@@ -283,8 +312,10 @@ public class CustomerController {
 	 */
 	@PutMapping("/cancelorder")
 	public AppOrderResponseDTO cancelOrder(@RequestParam int oid) {
+        logger.info("Request received to cancel the order", oid);
 		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
 		AppOrder order = orderService.cancelOrder(oid);
+        logger.info("---SUCCESSFULLY Cancelled order with ID: {}", oid);
 		return dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
 	}
 	/**
@@ -295,6 +326,7 @@ public class CustomerController {
 	 */
 	@GetMapping("/allplacedorders")
 	public List<AppOrderResponseDTO> getAllPlacedOrders(@RequestParam String username){
+        logger.info("Request received to get All Placed Orders", username);
 		if(username != null) {
 			List<AppOrder> orderList = orderService.viewOrdersByCustomer(username);
 			List<AppOrderResponseDTO> orderResponseList = new ArrayList<>();
@@ -302,6 +334,7 @@ public class CustomerController {
 			for(AppOrder order: orderList) {
 				orderResponseList.add(dtoMapper.getAppOrderResponseDTOFromAppOrder(order));
 			}
+            logger.info("--SUCCESSFULLY RETRIVED ALL PLACEDORDERS--");
 			return orderResponseList;
 		}
 		return null;
@@ -311,6 +344,7 @@ public class CustomerController {
 	public AppOrderResponseDTO viewOrderById(@RequestParam int oid) {
 		AppOrderDTOMapper dtoMapper = new AppOrderDTOMapper();
 		AppOrder order = orderService.viewOrderById(oid);
+        logger.info("--SUCCESSFULLY RETRIVED ORDER  BY ID--",oid);
 		return dtoMapper.getAppOrderResponseDTOFromAppOrder(order);
 	}
 }
