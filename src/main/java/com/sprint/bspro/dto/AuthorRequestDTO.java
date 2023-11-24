@@ -1,17 +1,22 @@
 package com.sprint.bspro.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 public class AuthorRequestDTO {
 	private int userCode;
+	@NotNull
 	private String password;
+	@NotNull
 	private String username;
+	@NotNull
 	private String userrole; 
 	private String name; 
 	private String houseAddress;
 	private String city;
 	private String country;
 	@Email
+	@NotNull
 	private String email;
 	private long phone;
 	private String region;

@@ -9,6 +9,7 @@ public class AdminRequestDTO {
 	private String username; 
 	@NotNull
 	private String password; 
+	@NotNull
 	private String userrole; 
 	private String fullName; 
 	private String houseAddress;
@@ -17,6 +18,7 @@ public class AdminRequestDTO {
 	@NotNull
 	@Email
 	private String email;
+	@NotNull
 	private long phone;
 	
 	/**

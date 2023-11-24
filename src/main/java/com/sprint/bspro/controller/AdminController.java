@@ -77,6 +77,18 @@ public class AdminController {
 		 return new ResponseEntity<BookResponseDTO>(bresponse, HttpStatus.OK);
 	}
 	
+	@GetMapping("/allbooks")
+	public List<BookResponseDTO> getAllBooks(){
+		List<Book> books = bookService.listAllBooks();
+		List<BookResponseDTO> booksDtos = new ArrayList<>();
+		BookDTOMapper brc = new BookDTOMapper();
+		for(Book book: books) {
+			BookResponseDTO bookDto = brc.getBookDTOFromBook(book);
+			booksDtos.add(bookDto);
+		}
+		return booksDtos;
+	}
+	
 	@ApiOperation(value="End point to get Book by book name, takes one param - title")
 	@GetMapping("/title/data")
 	/** This method retrieves a book from the Book Store App's database based on the provided book title.
