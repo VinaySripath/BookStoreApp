@@ -2,6 +2,8 @@ package com.sprint.bspro.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,6 +49,8 @@ public class BookStoreUserController {
 	IAuthorService authorService;
 	@Autowired
 	IAppCustomerService appCustomerService;
+	Logger logger = LoggerFactory.getLogger(AuthorController.class);
+
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -82,6 +86,7 @@ public class BookStoreUserController {
 		login.setToken(token);
 		login.setValid(isValid);
 		login.setRole(s);
+        logger.info("---SUCCESSFULLY VALIDATED USER---");
 		return login;
 	}
 	/** * Validates a user's username.
@@ -97,6 +102,7 @@ public class BookStoreUserController {
 			login.setIsUsername(true);
 			login.setEmail(s);
 		}
+        logger.info("VALIDAED SUCCESSFULLY",login);
 		return login;
 	}
 	/** * Sends an email using the provided MailStructure object.
@@ -108,12 +114,13 @@ public class BookStoreUserController {
 	@PostMapping("/sendmail")
     public String sendMail(@Valid @RequestBody MailStructure details)
     {
+		logger.info("Request received to send Email", details);
 		otp = (int)(Math.random()*1000000);
 		details.setSubject("OTP to set password for BOOK STORE APP");
 		details.setMsgBody("Please Enter this OTP to change your Password "+otp);
         String status
             = emailService.sendSimpleMail(details);
- 
+        logger.info("----SUCCESSFULLY sent Email--- {}");
         return status;
     }
 	/** * Resets the password for a user based on the provided ResetPasswordDTO.
@@ -127,9 +134,11 @@ public class BookStoreUserController {
 		if(resetPassword.getOtp().equals(otpstr)) {
 			boolean check = bookStoreUserService.appUpdatePassword(resetPassword.getPassword(), resetPassword.getUsername());
 			otp = (int)(Math.random()*1000000);
+            logger.info("------PASSWORD CHANGED SUCCESSFULL-----");
 			return check;
 		}
 		otp = (int)(Math.random()*1000000);
+        logger.warn("---YOU HAVE ENTERED AN INVALID OTP.---");
 		return false;
 	}
 	
@@ -139,11 +148,12 @@ public class BookStoreUserController {
 	*/
 	@PostMapping("/createadmin")
 	public AdminResponseDTO addAdmin(@Valid @RequestBody AdminRequestDTO adminDTO) {
+	    logger.info("Request received to ADD Admin", adminDTO);
 		if(adminDTO != null) {
 			AdminDTOMapper dtoConverter = new AdminDTOMapper();
-			
 			Admin admin = dtoConverter.getAdminFromAdminDTO(adminDTO);
 			Admin savedAdmin = adminService.createAppAdmin(admin);
+	        logger.info("---SUCCESSFULLU CREATED ADMIN---");
 			return dtoConverter.getAdminDTOFromAdmin(savedAdmin);
 		}
 		return null;
@@ -156,11 +166,13 @@ public class BookStoreUserController {
 	 */
 	@PostMapping("/createauthor")
 	public AuthorResponseDTO addAuthor(@Valid @RequestBody AuthorRequestDTO authorDTO) {
+	    logger.info("Request received to ADD Author", authorDTO);
 		if(authorDTO != null) {
 			AuthorDTOMapper dtoConverter = new AuthorDTOMapper();
 			
 			Author author = dtoConverter.getAuthorFromAuthorDTO(authorDTO);
 			Author savedAuthor = authorService.createAppAuthor(author);
+	        logger.info("---SUCCESSFULLY ADDED AUTHOR---");
 			return dtoConverter.getAuthorDTOFromAuthor(savedAuthor);
 		}
 		return null;
@@ -173,11 +185,13 @@ public class BookStoreUserController {
 	 */
 	@PostMapping("/addcustomer")
 	public AppCustomerResponseDTO addCustomer(@Valid @RequestBody AppCustomerRequestDTO customerDTO) {
+        logger.info("Request Received to Add Customer", customerDTO);
 		if(customerDTO != null) {
 			AppCustomerDTOMapper dtoConverter = new AppCustomerDTOMapper();
 			
 			AppCustomer customer = dtoConverter.getAppCustomerFromAppCustomerDTO(customerDTO);
 			AppCustomer savedCustomer = appCustomerService.createAppCustomer(customer);
+            logger.info("SUCCESSFULLUY ADDED CUSTOMER : {}");
 			return dtoConverter.getAppCustomerDTOFromAppCustomer(savedCustomer);
 		}
 		return null;
